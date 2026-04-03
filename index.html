@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ouvidoria Escolar | Portal Interativo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-fixo"></div>
+
+    <nav class="sidebar glass">
+        <h2>Painel Escolar</h2>
+        <button onclick="mudarAba('forum')">💬 Fórum de Alunos</button>
+        <button onclick="mudarAba('mural')">💡 Mural de Ideias</button>
+        <button onclick="mudarAba('humor')">🎭 Clima da Escola</button>
+        <button onclick="mudarAba('feedback')">🏫 Opinião Escola</button>
+        <button onclick="mudarAba('contatos')">📞 Falar com a Gente</button>
+    </nav>
+
+    <main class="conteudo">
+        <section id="forum" class="aba active glass">
+            <h2>💬 Fórum de Discussão</h2>
+            <div id="feed-forum" class="feed-container"></div>
+            <div class="input-box">
+                <input type="text" id="input-nick" placeholder="Seu apelido...">
+                <input type="text" id="input-msg" placeholder="Escreva sua mensagem...">
+                <button onclick="salvarMensagem()">Enviar</button>
+            </div>
+        </section>
+
+        <section id="mural" class="aba glass">
+            <h2>💡 Mural de Ideias (Votação)</h2>
+            <div id="feed-mural" class="feed-grid"></div>
+            <div class="input-box">
+                <input type="text" id="input-ideia" placeholder="Sua sugestão para a escola...">
+                <button onclick="salvarIdeia()">Publicar Ideia</button>
+            </div>
+        </section>
+
+        <section id="humor" class="aba glass text-center">
+            <h2>Como estamos nos sentindo hoje?</h2>
+            <div class="emoji-seletor">
+                <button onclick="votarEmoji('feliz')">😊 <span id="v-feliz">0</span></button>
+                <button onclick="votarEmoji('triste')">😢 <span id="v-triste">0</span></button>
+                <button onclick="votarEmoji('cansado')">😴 <span id="v-cansado">0</span></button>
+                <button onclick="votarEmoji('bravo')">😡 <span id="v-bravo">0</span></button>
+            </div>
+            <h3 id="humor-geral">Destaque: Vote para ver o clima!</h3>
+        </section>
+
+        <section id="contatos" class="aba glass">
+            <h2>📞 Canais de Atendimento</h2>
+            <div class="links-diretos">
+                <a href="https://wa.me/5589981259467" target="_blank" class="btn-link wa">WhatsApp Direto</a>
+                <a href="https://instagram.com/m.eduarda.brito25" target="_blank" class="btn-link ig">Instagram</a>
+                <a href="mailto:eduardabrito044@gmail.com" class="btn-link mail">E-mail Oficial</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
