@@ -1,0 +1,39 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+body { display: flex; min-height: 100vh; background: #05070a; color: white; }
+
+.background-fixo {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+    z-index: -1; opacity: 0.5;
+}
+
+.sidebar { width: 260px; padding: 25px; display: flex; flex-direction: column; gap: 12px; height: 100vh; position: sticky; top: 0; }
+.sidebar h2 { font-size: 1.2rem; margin-bottom: 20px; color: #c084fc; text-transform: uppercase; letter-spacing: 1px; }
+
+.sidebar button {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    color: white; padding: 15px; border-radius: 15px; text-align: left; cursor: pointer; transition: 0.3s;
+}
+
+.sidebar button:hover { background: #7c3aed; transform: translateX(5px); }
+
+.glass { background: rgba(255, 255, 255, 0.07); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; }
+
+.conteudo { flex: 1; padding: 40px; }
+.aba { display: none; padding: 30px; height: 100%; }
+.aba.active { display: block; animation: subir 0.4s ease; }
+
+@keyframes subir { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.feed-container { height: 400px; overflow-y: auto; margin-bottom: 20px; background: rgba(0,0,0,0.2); padding: 20px; border-radius: 20px; }
+.msg-post { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid #7c3aed; }
+
+.input-box { display: flex; gap: 10px; flex-wrap: wrap; }
+input { background: rgba(0,0,0,0.4); border: none; padding: 15px; border-radius: 12px; color: white; flex: 1; }
+
+.btn-link { display: block; padding: 20px; text-decoration: none; color: white; border-radius: 15px; margin-bottom: 10px; text-align: center; font-weight: bold; transition: 0.3s; }
+.wa { background: #25d366; } .ig { background: #e1306c; } .mail { background: #3b82f6; }
+
+.emoji-seletor { display: flex; justify-content: space-around; font-size: 2rem; padding: 40px 0; }
+.emoji-seletor button { background: none; border: none; cursor: pointer; color: white; display: flex; flex-direction: column; }
