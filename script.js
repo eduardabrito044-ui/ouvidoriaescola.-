@@ -1,84 +1,102 @@
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, push, onValue, set, runTransaction } from "firebase/database";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
-// Suas chaves do Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyBdlHar22iODe81f-nrUi06PLWKQReb9Gc",
-    authDomain: "siteescolaeduarda.firebaseapp.com",
-    databaseURL: "https://siteescolaeduarda-default-rtdb.firebaseio.com",
-    projectId: "siteescolaeduarda",
-    storageBucket: "siteescolaeduarda.firebasestorage.app",
-    messagingSenderId: "381495876879",
-    appId: "1:381495876879:web:5b2bbb9083924f597e327a"
+  apiKey: "AIzaSyBdlHar22iODe81f-nrUi06PLWKQReb9Gc",
+  authDomain: "siteescolaed uarda.firebaseapp.com",
+  databaseURL: "https://siteescolaeduarda-default-rtdb.firebaseio.com",
+  projectId: "siteescolaeduarda",
+  storageBucket: "siteescolaeduarda.firebasestorage.app",
+  messagingSenderId: "381495876879",
+  appId: "1:381495876879:web:4366dc25b119a2567e327a"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-const hoje = new Date().toISOString().split('T')[0];
+const mensagensRef = ref(db, "mensagens");
 
-// Navegação
-window.mudarAba = (id) => {
-    document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-};
-
-// --- CHAT (FÓRUM) ---
-window.salvarMensagem = () => {
-    const nick = document.getElementById('input-nick').value || "Anônimo";
-    const msg = document.getElementById('input-msg').value;
-    if(!msg) return;
-    push(ref(db, 'chat'), { nick, msg, timestamp: Date.now() });
-    document.getElementById('input-msg').value = "";
-};
-
-onValue(ref(db, 'chat'), (snap) => {
-    const feed = document.getElementById('feed-forum');
-    const dados = snap.val();
-    let html = "";
-    for(let id in dados) {
-        html += `<div class="msg-post"><strong>@${dados[id].nick}:</strong> ${dados[id].msg}</div>`;
+// --- FUNÇÃO DO TELEGRAM ---
+async function enviarNotificacaoTelegram(texto) {
+    const token = '8677563218:AAETd9WMADtAu1PG9i4pOmP07eKZTHtAOxE';
+    const meuId = '8562940574';
+    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${meuId}&text=${encodeURIComponent(texto)}`;
+    
+    try {
+        await fetch(url);
+    } catch (e) {
+        console.error("Erro Telegram:", e);
     }
-    feed.innerHTML = html;
-    feed.scrollTop = feed.scrollHeight;
-});
+}
 
-// --- MURAL DE IDEIAS ---
-window.salvarIdeia = () => {
-    const texto = document.getElementById('input-ideia').value;
-    if(!texto) return;
-    push(ref(db, 'mural'), { texto, votos: 0 });
-    document.getElementById('input-ideia').value = "";
+// Nome automático
+let meuNome = localStorage.getItem("nome");
+if (!meuNome) {
+  meuNome = prompt("Digite seu nome:");
+  localStorage.setItem("nome", meuNome);
+}
+
+// Notificar quando o site for aberto (Opcional)
+enviarNotificacaoTelegram(`🚀 ${meuNome} acabou de entrar no site!`);
+
+// Trocar aba
+window.mudarAba = function(id) {
+  document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 };
 
-onValue(ref(db, 'mural'), (snap) => {
-    const feed = document.getElementById('feed-mural');
-    const dados = snap.val();
-    let html = "";
-    for(let id in dados) {
-        html += `<div class="msg-post">💡 ${dados[id].texto}</div>`;
-    }
-    feed.innerHTML = html;
-});
+// Enviar mensagem
+window.salvarMensagem = function() {
+  const msg = document.getElementById("input-msg").value;
+  if (!msg) return;
 
-// --- HUMOR DIÁRIO (RESET AUTOMÁTICO) ---
-window.votarHumor = (tipo) => {
-    const humorRef = ref(db, `humor/${hoje}/${tipo}`);
-    runTransaction(humorRef, (atual) => (atual || 0) + 1);
+  push(mensagensRef, {
+    nome: meuNome,
+    texto: msg,
+    hora: new Date().toLocaleTimeString()
+  });
+
+  // AVISO NO TELEGRAM
+  enviarNotificacaoTelegram(`📩 Nova mensagem no Fórum!\nDe: ${meuNome}\nTexto: ${msg}`);
+
+  document.getElementById("input-msg").value = "";
 };
 
-onValue(ref(db, `humor/${hoje}`), (snap) => {
-    const dados = snap.val() || { feliz: 0, triste: 0, cansado: 0 };
-    document.getElementById('v-feliz').innerText = dados.feliz || 0;
-    document.getElementById('v-triste').innerText = dados.triste || 0;
-    document.getElementById('v-cansado').innerText = dados.cansado || 0;
+// Receber mensagens
+onValue(mensagensRef, (snapshot) => {
+  const feed = document.getElementById("feed-forum");
+  if (!feed) return;
+  feed.innerHTML = "";
+
+  snapshot.forEach((child) => {
+    const dados = child.val();
+    const div = document.createElement("div");
+    div.classList.add("msg-post"); // Ajustado para sua classe CSS
+
+    div.innerHTML = `
+      <strong>${dados.nome}</strong><br>
+      ${dados.texto}<br>
+      <small>${dados.hora}</small>
+    `;
+    feed.appendChild(div);
+  });
+  feed.scrollTop = feed.scrollHeight;
 });
 
-// --- FEEDBACK ---
-window.enviarFeedback = () => {
-    const texto = document.getElementById('texto-feedback').value;
-    if(!texto) return;
-    push(ref(db, 'feedbacks'), { texto, data: new Date().toLocaleString() });
-    alert("Enviado com sucesso!");
-    document.getElementById('texto-feedback').value = "";
+// Funções extras com alertas
+window.salvarIdeia = function() {
+  const ideia = document.querySelector("#aba-ideias textarea").value;
+  enviarNotificacaoTelegram(`💡 Nova Ideia Enviada por ${meuNome}: ${ideia}`);
+  alert("Ideia enviada com sucesso!");
 };
+
+window.votarEmoji = function(tipo) {
+  enviarNotificacaoTelegram(`📊 Voto de Humor: ${meuNome} marcou [${tipo}]`);
+  alert("Voto registrado: " + tipo);
+};
+
+window.salvarFeedbackEscola = function() {
+  enviarNotificacaoTelegram(`📝 Novo Feedback da Escola enviado por ${meuNome}`);
+  alert("Feedback enviado!");
+};
+
 
