@@ -79,3 +79,32 @@ function atualizarPlacarHumor() {
         document.getElementById(`v-${t}`).innerText = humor[t];
     }
 }
+// --- LÓGICA DE OPINIÃO SOBRE A ESCOLA ---
+function salvarFeedbackEscola() {
+    const texto = document.getElementById('feedback-texto').value;
+    const nick = document.getElementById('input-nick').value || "Anônimo";
+
+    if (!texto) {
+        alert("Por favor, escreva sua opinião antes de enviar!");
+        return;
+    }
+
+    // Busca o que já existe ou cria lista nova
+    const feedbacks = JSON.parse(localStorage.getItem('feedbacks_escola') || '[]');
+    
+    // Adiciona a nova opinião com data
+    feedbacks.push({
+        aluno: nick,
+        opiniao: texto,
+        data: new Date().toLocaleDateString('pt-BR')
+    });
+
+    // Salva de volta no navegador
+    localStorage.setItem('feedbacks_escola', JSON.stringify(feedbacks));
+
+    alert("Obrigada! Sua opinião sobre a escola foi salva com sucesso.");
+    document.getElementById('feedback-texto').value = ""; // Limpa o campo
+    
+    // Opcional: Mostra no console para você monitorar
+    console.log("Novo feedback recebido:", feedbacks);
+}
