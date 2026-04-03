@@ -1,110 +1,85 @@
-// Carregar dados ao abrir o site
-window.onload = () => {
-    exibirMensagens();
-    exibirIdeias();
-    atualizarPlacarHumor();
-};
+ * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial; }
 
-function mudarAba(id) {
-    document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+body { display: flex; min-height: 100vh; background: #05070a; color: white; }
+
+.background-fixo {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1e40af, #7c3aed);
+  opacity: 0.5;
+  z-index: -1;
 }
 
-// --- LÓGICA DO FÓRUM ---
-function salvarMensagem() {
-    const nick = document.getElementById('input-nick').value || "Anônimo";
-    const msg = document.getElementById('input-msg').value;
-    
-    if(!msg) return;
-
-    const mensagens = JSON.parse(localStorage.getItem('forum_msgs') || '[]');
-    mensagens.push({ nick, texto: msg });
-    localStorage.setItem('forum_msgs', JSON.stringify(mensagens));
-    
-    document.getElementById('input-msg').value = "";
-    exibirMensagens();
+.sidebar {
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-function exibirMensagens() {
-    const feed = document.getElementById('feed-forum');
-    const mensagens = JSON.parse(localStorage.getItem('forum_msgs') || '[]');
-    feed.innerHTML = mensagens.map(m => `
-        <div class="msg-post"><strong>@${m.nick}:</strong> ${m.texto}</div>
-    `).join('');
-    feed.scrollTop = feed.scrollHeight;
+.sidebar button {
+  padding: 12px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-// --- LÓGICA DO MURAL DE IDEIAS ---
-function salvarIdeia() {
-    const texto = document.getElementById('input-ideia').value;
-    if(!texto) return;
+.conteudo { flex: 1; padding: 20px; }
 
-    const ideias = JSON.parse(localStorage.getItem('mural_ideias') || '[]');
-    ideias.push({ texto, votos: 0 });
-    localStorage.setItem('mural_ideias', JSON.stringify(ideias));
+.aba { display: none; }
+.aba.active { display: block; }
 
-    document.getElementById('input-ideia').value = "";
-    exibirIdeias();
+.input-box { display: flex; gap: 10px; margin-top: 10px; }
+
+input, textarea {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
 }
 
-function votarIdeia(index) {
-    const ideias = JSON.parse(localStorage.getItem('mural_ideias'));
-    ideias[index].votos += 1;
-    localStorage.setItem('mural_ideias', JSON.stringify(ideias));
-    exibirIdeias();
+button {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
 }
 
-function exibirIdeias() {
-    const feed = document.getElementById('feed-mural');
-    const ideias = JSON.parse(localStorage.getItem('mural_ideias') || '[]');
-    feed.innerHTML = ideias.map((ideia, i) => `
-        <div class="msg-post" style="display:flex; justify-content:space-between; align-items:center;">
-            <span>${ideia.texto}</span>
-            <button onclick="votarIdeia(${i})" style="background:#7c3aed; padding:5px 10px; border-radius:8px; border:none; color:white;">👍 ${ideia.votos}</button>
-        </div>
-    `).join('');
+/* CHAT BONITO */
+#chat-box {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
 }
 
-// --- LÓGICA DO HUMOR ---
-function votarEmoji(tipo) {
-    const humor = JSON.parse(localStorage.getItem('clima_escola') || '{"feliz":0,"triste":0,"cansado":0,"bravo":0}');
-    humor[tipo] += 1;
-    localStorage.setItem('clima_escola', JSON.stringify(humor));
-    atualizarPlacarHumor();
+#feed-forum {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background: #e5ddd5;
+  border-radius: 10px;
 }
 
-function atualizarPlacarHumor() {
-    const humor = JSON.parse(localStorage.getItem('clima_escola') || '{"feliz":0,"triste":0,"cansado":0,"bravo":0}');
-    for (let t in humor) {
-        document.getElementById(`v-${t}`).innerText = humor[t];
-    }
+.msg {
+  padding: 8px;
+  margin: 5px;
+  border-radius: 10px;
+  max-width: 70%;
 }
-// --- LÓGICA DE OPINIÃO SOBRE A ESCOLA ---
-function salvarFeedbackEscola() {
-    const texto = document.getElementById('feedback-texto').value;
-    const nick = document.getElementById('input-nick').value || "Anônimo";
 
-    if (!texto) {
-        alert("Por favor, escreva sua opinião antes de enviar!");
-        return;
-    }
-
-    // Busca o que já existe ou cria lista nova
-    const feedbacks = JSON.parse(localStorage.getItem('feedbacks_escola') || '[]');
-    
-    // Adiciona a nova opinião com data
-    feedbacks.push({
-        aluno: nick,
-        opiniao: texto,
-        data: new Date().toLocaleDateString('pt-BR')
-    });
-
-    // Salva de volta no navegador
-    localStorage.setItem('feedbacks_escola', JSON.stringify(feedbacks));
-
-    alert("Obrigada! Sua opinião sobre a escola foi salva com sucesso.");
-    document.getElementById('feedback-texto').value = ""; // Limpa o campo
-    
-    // Opcional: Mostra no console para você monitorar
-    console.log("Novo feedback recebido:", feedbacks);
+.me {
+  background: #dcf8c6;
+  margin-left: auto;
+  color: black;
 }
+
+.outro {
+  background: white;
+  color: black;
+  margin-right: auto;
+      }
