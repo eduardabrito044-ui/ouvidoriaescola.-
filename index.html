@@ -13,7 +13,6 @@
         <div class="logo-container">
             <img src="logo.png" alt="Logo Escola">
         </div>
-
         <h2>Menu Escolar</h2>
         <button onclick="mudarAba('forum')">💬 Chat de Alunos</button>
         <button onclick="mudarAba('mural')">💡 Mural de Ideias</button>
@@ -27,9 +26,17 @@
         <section id="forum" class="aba active glass">
             <h2>💬 Chat da Escola</h2>
             <div id="feed-forum" class="feed"></div>
-            <div class="input-area">
-                <input type="text" id="input-msg" placeholder="Escreva uma mensagem...">
-                <button onclick="salvarMensagem()">Enviar</button>
+            
+            <div class="input-area-container">
+                <div id="reply-preview">
+                    <span id="reply-text"></span>
+                    <button onclick="cancelarResposta()">X</button>
+                </div>
+                
+                <div class="input-area">
+                    <input type="text" id="input-msg" placeholder="Toque em uma mensagem para responder...">
+                    <button onclick="salvarMensagem()">Enviar</button>
+                </div>
             </div>
         </section>
 
@@ -61,16 +68,16 @@
         <section id="sentimentos" class="aba glass text-center">
             <h2>🎭 Como a escola está hoje?</h2>
             <div class="emoji-grid">
-                <button onclick="votarHumor('feliz')" title="Feliz">😊</button>
-                <button onclick="votarHumor('triste')" title="Triste">😢</button>
-                <button onclick="votarHumor('cansado')" title="Cansado">😴</button>
-                <button onclick="votarHumor('estudioso')" title="Estudioso">🤓</button>
-                <button onclick="votarHumor('animado')" title="Animado">🤩</button>
-                <button onclick="votarHumor('bravo')" title="Bravo">😡</button>
-                <button onclick="votarHumor('apaixonado')" title="Apaixonado">🥰</button>
-                <button onclick="votarHumor('tranquilo')" title="Tranquilo">😎</button>
-                <button onclick="votarHumor('sobrecarregado')" title="Sobrecarregado">🤯</button>
-                <button onclick="votarHumor('nervoso')" title="Rindo de Nervoso">🤡</button>
+                <button onclick="votarHumor('feliz')">😊</button>
+                <button onclick="votarHumor('triste')">😢</button>
+                <button onclick="votarHumor('cansado')">😴</button>
+                <button onclick="votarHumor('estudioso')">🤓</button>
+                <button onclick="votarHumor('animado')">🤩</button>
+                <button onclick="votarHumor('bravo')">😡</button>
+                <button onclick="votarHumor('apaixonado')">🥰</button>
+                <button onclick="votarHumor('tranquilo')">😎</button>
+                <button onclick="votarHumor('sobrecarregado')">🤯</button>
+                <button onclick="votarHumor('nervoso')">🤡</button>
             </div>
         </section>
 
@@ -82,8 +89,8 @@
 
         <section id="contatos" class="aba glass">
             <h2>📞 Contatos Oficiais</h2>
-            <a href="https://wa.me/5589981259467" target="_blank" style="background: #25d366; color: white; display: block; padding: 12px; text-align: center; border-radius: 10px; text-decoration: none; margin-bottom: 10px; font-weight: bold;">WhatsApp</a>
-            <a href="https://instagram.com/m.eduarda.brito25" target="_blank" style="background: #e1306c; color: white; display: block; padding: 12px; text-align: center; border-radius: 10px; text-decoration: none; font-weight: bold;">Instagram</a>
+            <a href="https://wa.me/5589981259467" target="_blank" class="btn-contato wa">WhatsApp</a>
+            <a href="https://instagram.com/m.eduarda.brito25" target="_blank" class="btn-contato ig">Instagram</a>
         </section>
     </main>
 
