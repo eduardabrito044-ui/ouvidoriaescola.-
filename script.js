@@ -94,7 +94,7 @@ window.votarEmoji = function(tipo) {
   alert("Voto registrado: " + tipo);
 };
 
-window.salvarFeedbackEscola = function() {
+window.enviarFeedbackEscola = function() {
   enviarNotificacaoTelegram(`📝 Novo Feedback da Escola enviado por ${meuNome}`);
   alert("Feedback enviado!");
 };
