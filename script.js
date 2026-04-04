@@ -1,9 +1,10 @@
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBdlHar22iODe81f-nrUi06PLWKQReb9Gc",
-  authDomain: "siteescolaed uarda.firebaseapp.com",
+  authDomain: "siteescolaeduarda.firebaseapp.com",
   databaseURL: "https://siteescolaeduarda-default-rtdb.firebaseio.com",
   projectId: "siteescolaeduarda",
   storageBucket: "siteescolaeduarda.firebasestorage.app",
@@ -15,22 +16,24 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const mensagensRef = ref(db, "mensagens");
 
-// nome automático
+// 👤 Nome automático (melhorado)
 let meuNome = localStorage.getItem("nome");
-if (!meuNome) {
-  meuNome = prompt("Digite seu nome:");
+if (!meuNome || meuNome.trim() === "") {
+  meuNome = prompt("Digite seu nome:") || "Anônimo";
   localStorage.setItem("nome", meuNome);
 }
 
-// trocar aba
+// 🔄 Trocar abas
 window.mudarAba = function(id) {
   document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 };
 
-// enviar mensagem
+// 📩 Enviar mensagem (com Enter também)
 window.salvarMensagem = function() {
-  const msg = document.getElementById("input-msg").value;
+  const input = document.getElementById("input-msg");
+  const msg = input.value.trim();
+
   if (!msg) return;
 
   push(mensagensRef, {
@@ -39,10 +42,17 @@ window.salvarMensagem = function() {
     hora: new Date().toLocaleTimeString()
   });
 
-  document.getElementById("input-msg").value = "";
+  input.value = "";
 };
 
-// receber mensagens
+// ⌨️ Enviar com ENTER
+document.getElementById("input-msg").addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
+    salvarMensagem();
+  }
+});
+
+// 👀 Receber mensagens em tempo real
 onValue(mensagensRef, (snapshot) => {
   const feed = document.getElementById("feed-forum");
   feed.innerHTML = "";
@@ -53,6 +63,7 @@ onValue(mensagensRef, (snapshot) => {
     const div = document.createElement("div");
     div.classList.add("msg");
 
+    // 🎨 Diferencia mensagem
     if (dados.nome === meuNome) {
       div.classList.add("me");
     } else {
@@ -68,10 +79,11 @@ onValue(mensagensRef, (snapshot) => {
     feed.appendChild(div);
   });
 
+  // 🔽 desce automático
   feed.scrollTop = feed.scrollHeight;
 });
 
-// funções extras (mantidas simples)
+// 💡 Funções extras
 window.salvarIdeia = function() {
   alert("Ideia salva (modo simples)");
 };
@@ -83,5 +95,6 @@ window.votarEmoji = function(tipo) {
 window.salvarFeedbackEscola = function() {
   alert("Feedback enviado!");
 };
+</script>
 
 
