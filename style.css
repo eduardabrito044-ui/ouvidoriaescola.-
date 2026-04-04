@@ -168,3 +168,15 @@ button:hover { filter: brightness(1.2); }
     display: block !important;
     margin: 0 auto !important;
 }
+.sidebar div img {
+    width: 90px !important;
+    height: 90px !important;
+    background-color: white !important;
+    border-radius: 50% !important;
+    object-fit: contain !important;
+    padding: 12px !important;
+    border: 3px solid rgba(255, 255, 255, 0.4) !important;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+    display: block !important;
+    margin: 10px auto !important;
+}
