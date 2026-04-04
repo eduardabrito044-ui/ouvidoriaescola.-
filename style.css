@@ -94,3 +94,45 @@ button:hover { filter: brightness(1.2); }
     .sidebar button { white-space: nowrap; padding: 10px 15px; }
     .main-content { padding: 15px; }
 }
+/* DESIGN DA ABA DE CRONOGRAMA */
+.cronograma-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.card-evento {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 15px;
+    transition: 0.3s ease;
+}
+
+.card-evento:hover {
+    background: rgba(124, 58, 237, 0.15);
+    transform: translateY(-3px);
+}
+
+.data-badge {
+    background: #7c3aed;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.card-evento h3 { 
+    font-size: 1.1rem; 
+    margin-bottom: 5px; 
+    color: #a78bfa; 
+}
+
+.card-evento p { 
+    font-size: 0.85rem; 
+    opacity: 0.8; 
+}
