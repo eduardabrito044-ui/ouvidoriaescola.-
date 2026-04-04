@@ -19,27 +19,35 @@ localStorage.setItem("nome_usuario", meuNome);
 
 let msgParaResponder = null;
 
-window.mudarAba = (id) => {
-    document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+// FUNÇÃO DE MUDAR ABA (CORRIGIDA)
+window.mudarAba = function(id) {
+    const abas = document.querySelectorAll('.aba');
+    abas.forEach(aba => aba.classList.remove('active'));
+    
+    const abaAtiva = document.getElementById(id);
+    if(abaAtiva) {
+        abaAtiva.classList.add('active');
+    }
 };
 
-window.prepararResposta = (nome, texto) => {
+// RESPOSTAS
+window.prepararResposta = function(nome, texto) {
     msgParaResponder = { nome, texto };
     document.getElementById('reply-preview').style.display = 'flex';
-    document.getElementById('reply-user').innerText = `Respondendo ${nome}`;
+    document.getElementById('reply-user').innerText = `Respondendo a ${nome}`;
     document.getElementById('reply-text').innerText = texto.substring(0, 30) + "...";
     document.getElementById('input-msg').focus();
 };
 
-window.cancelarResposta = () => {
+window.cancelarResposta = function() {
     msgParaResponder = null;
     document.getElementById('reply-preview').style.display = 'none';
 };
 
+// SALVAR NO FIREBASE
 const chatRef = ref(db, "mensagens");
 
-window.salvarMensagem = () => {
+window.salvarMensagem = function() {
     const input = document.getElementById("input-msg");
     if (!input.value.trim()) return;
 
@@ -59,6 +67,7 @@ window.salvarMensagem = () => {
     cancelarResposta();
 };
 
+// LER DO FIREBASE
 onValue(chatRef, (snapshot) => {
     const feed = document.getElementById("feed-forum");
     if (!feed) return;
@@ -67,11 +76,12 @@ onValue(chatRef, (snapshot) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = `msg-post ${d.nome === meuNome ? 'me' : 'outro'}`;
+        
         div.onclick = () => prepararResposta(d.nome, d.texto);
 
         let html = `<span class="msg-name">${d.nome}</span>`;
         if (d.respostaDe) {
-            html += `<div style="background:rgba(0,0,0,0.1); border-left:2px solid white; padding:5px; margin-bottom:5px; font-size:0.8rem;">
+            html += `<div style="background:rgba(0,0,0,0.2); padding:5px; border-left:2px solid white; font-size:0.8rem; margin-bottom:5px;">
                         <small>↳ ${d.respostaDe}</small>
                      </div>`;
         }
@@ -81,3 +91,8 @@ onValue(chatRef, (snapshot) => {
     });
     feed.scrollTop = feed.scrollHeight;
 });
+
+// OUTRAS FUNÇÕES
+window.salvarIdeia = () => { alert("Ideia enviada!"); };
+window.votarHumor = (h) => { alert("Voto: " + h); };
+window.enviarFeedback = () => { alert("Feedback enviado!"); };
