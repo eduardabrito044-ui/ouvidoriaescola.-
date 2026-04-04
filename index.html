@@ -45,10 +45,12 @@
 
         <section id="mural" class="aba">
             <div class="header-fixo glass"><h2>💡 Mural de Sugestões</h2></div>
-            <div id="feed-mural" class="feed-simples glass"></div>
-            <div class="input-footer-simples glass">
-                <input type="text" id="input-ideia" placeholder="Sua ideia...">
-                <button onclick="salvarIdeia()">Enviar</button>
+            <div id="feed-mural" class="feed-simples"></div>
+            <div class="footer-input glass">
+                <div class="input-group">
+                    <input type="text" id="input-ideia" placeholder="Sua sugestão ou ideia...">
+                    <button onclick="salvarIdeia()">Sugerir</button>
+                </div>
             </div>
         </section>
 
@@ -62,12 +64,14 @@
 
         <section id="sentimentos" class="aba">
             <div class="header-fixo glass"><h2>🎭 Humor da Escola</h2></div>
-            <div class="content-scroll glass center">
+            <div class="content-scroll glass">
                 <div class="emoji-grid">
-                    <button onclick="votarHumor('feliz')">😊</button>
-                    <button onclick="votarHumor('cansado')">😴</button>
-                    <button onclick="votarHumor('estudioso')">🤓</button>
-                    <button onclick="votarHumor('animado')">🤩</button>
+                    <button onclick="votarHumor('Feliz 😊')">😊</button>
+                    <button onclick="votarHumor('Cansado 😴')">😴</button>
+                    <button onclick="votarHumor('Estudioso 🤓')">🤓</button>
+                    <button onclick="votarHumor('Animado 🤩')">🤩</button>
+                    <button onclick="votarHumor('Bravo 😡')">😡</button>
+                    <button onclick="votarHumor('Apaixonado 🥰')">🥰</button>
                 </div>
             </div>
         </section>
@@ -75,7 +79,7 @@
         <section id="feedback" class="aba">
             <div class="header-fixo glass"><h2>🏫 Feedback</h2></div>
             <div class="content-scroll glass">
-                <textarea id="texto-feedback" placeholder="Sua opinião..."></textarea>
+                <textarea id="texto-feedback" placeholder="O que você acha da escola?"></textarea>
                 <button class="btn-env" onclick="enviarFeedback()">Enviar Feedback</button>
             </div>
         </section>
