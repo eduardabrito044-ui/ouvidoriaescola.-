@@ -1,4 +1,3 @@
-<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
 
@@ -16,24 +15,22 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const mensagensRef = ref(db, "mensagens");
 
-// 👤 Nome automático (melhorado)
+// nome automático
 let meuNome = localStorage.getItem("nome");
-if (!meuNome || meuNome.trim() === "") {
-  meuNome = prompt("Digite seu nome:") || "Anônimo";
+if (!meuNome) {
+  meuNome = prompt("Digite seu nome:");
   localStorage.setItem("nome", meuNome);
 }
 
-// 🔄 Trocar abas
+// trocar aba
 window.mudarAba = function(id) {
   document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 };
 
-// 📩 Enviar mensagem (com Enter também)
+// enviar mensagem
 window.salvarMensagem = function() {
-  const input = document.getElementById("input-msg");
-  const msg = input.value.trim();
-
+  const msg = document.getElementById("input-msg").value;
   if (!msg) return;
 
   push(mensagensRef, {
@@ -42,17 +39,10 @@ window.salvarMensagem = function() {
     hora: new Date().toLocaleTimeString()
   });
 
-  input.value = "";
+  document.getElementById("input-msg").value = "";
 };
 
-// ⌨️ Enviar com ENTER
-document.getElementById("input-msg").addEventListener("keypress", function(e) {
-  if (e.key === "Enter") {
-    salvarMensagem();
-  }
-});
-
-// 👀 Receber mensagens em tempo real
+// receber mensagens
 onValue(mensagensRef, (snapshot) => {
   const feed = document.getElementById("feed-forum");
   feed.innerHTML = "";
@@ -63,7 +53,6 @@ onValue(mensagensRef, (snapshot) => {
     const div = document.createElement("div");
     div.classList.add("msg");
 
-    // 🎨 Diferencia mensagem
     if (dados.nome === meuNome) {
       div.classList.add("me");
     } else {
@@ -79,11 +68,10 @@ onValue(mensagensRef, (snapshot) => {
     feed.appendChild(div);
   });
 
-  // 🔽 desce automático
   feed.scrollTop = feed.scrollHeight;
 });
 
-// 💡 Funções extras
+// funções extras (mantidas simples)
 window.salvarIdeia = function() {
   alert("Ideia salva (modo simples)");
 };
@@ -95,6 +83,3 @@ window.votarEmoji = function(tipo) {
 window.salvarFeedbackEscola = function() {
   alert("Feedback enviado!");
 };
-</script>
-
-
