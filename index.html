@@ -22,13 +22,20 @@
         </div>
     </nav>
 
-    <button onclick="toggleTheme()" id="theme-toggle-fixed" title="Alternar Tema">🌓</button>
+    <button onclick="toggleTheme()" id="theme-toggle-fixed">🌓</button>
 
     <main class="main-content">
         <section id="forum" class="aba active">
             <div class="header-fixo"><h2>Direct dos Alunos</h2></div>
             <div id="feed-forum" class="feed"></div>
             <div class="footer-input">
+                <div id="reply-preview" style="display: none; background: var(--card); padding: 8px; border-left: 3px solid var(--verde); margin-bottom: 5px; border-radius: 8px; justify-content: space-between; align-items: center;">
+                    <div style="overflow: hidden;">
+                        <small id="reply-user" style="color: var(--verde); font-weight: 800; font-size: 0.7rem;"></small>
+                        <p id="reply-text" style="font-size: 0.8rem; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></p>
+                    </div>
+                    <button onclick="cancelarResposta()" style="background:none; border:none; color:var(--text); font-weight:800; cursor:pointer;">✕</button>
+                </div>
                 <div class="input-container">
                     <input type="text" id="input-msg" placeholder="Enviar mensagem...">
                     <button class="send-btn" onclick="salvarMensagem()">Enviar</button>
@@ -61,7 +68,7 @@
         <section id="cronograma" class="aba">
             <div class="header-fixo"><h2>Cronograma Escolar</h2></div>
             <div class="content-scroll">
-                <div class="item-evento olympics">🏆 01/05 - Abertura das Olimpíadas</div>
+                <div class="item-evento olympics">🏆 01/05 - Abertura das Olimpíadas (CETI)</div>
                 <div class="item-evento">📅 20/05 - Feira de Empreendedorismo</div>
             </div>
         </section>
@@ -80,11 +87,10 @@
             <div class="header-fixo"><h2>A tua opinião</h2></div>
             <div class="content-scroll">
                 <textarea id="texto-feedback" placeholder="Escreva seu feedback..."></textarea>
-                <button class="btn-insta" onclick="enviarFeedback()">Enviar</button>
+                <button class="btn-insta" onclick="enviarFeedback()">Enviar Feedback</button>
             </div>
         </section>
     </main>
-
     <script type="module" src="script.js"></script>
 </body>
 </html>
