@@ -10,7 +10,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-let nome = localStorage.getItem("nome") || prompt("Olá! Qual o seu nome?") || "Estudante";
+let nome = localStorage.getItem("nome") || prompt("Seu nome:") || "Estudante";
 localStorage.setItem("nome", nome);
 
 window.mudarAba = (id) => {
@@ -20,55 +20,23 @@ window.mudarAba = (id) => {
     if(document.getElementById("btn-"+id)) document.getElementById("btn-"+id).classList.add("active-btn");
 };
 
-// SALVAR MENSAGEM
 window.salvarMensagem = () => {
     const input = document.getElementById("input-msg");
-    if (!input.value.trim()) return;
-    push(ref(db, "mensagens"), { nome, texto: input.value });
+    if (input.value.trim()) push(ref(db, "mensagens"), { nome, texto: input.value });
     input.value = "";
 };
 
-// LER MENSAGENS
 onValue(ref(db, "mensagens"), snap => {
     const feed = document.getElementById("feed-forum"); feed.innerHTML = "";
     snap.forEach(c => {
         const d = c.val();
         const div = document.createElement("div");
         div.className = `msg-post ${d.nome === nome ? 'me' : 'outro'}`;
-        div.innerHTML = `<b>${d.nome}</b><br>${d.texto}`;
+        div.innerHTML = `<b>${d.nome}</b>${d.texto}`;
         feed.appendChild(div);
     });
     feed.scrollTop = feed.scrollHeight;
 });
-
-// ALERTAS (SENHA)
-window.salvarAviso = () => {
-    if(prompt("Chave de Direção:") === "Chernobyl") {
-        const input = document.getElementById("input-aviso");
-        if(input.value.trim()) push(ref(db, "avisos"), { texto: input.value });
-        input.value = "";
-    }
-};
-
-onValue(ref(db, "avisos"), snap => {
-    const feed = document.getElementById("feed-avisos"); feed.innerHTML = "";
-    snap.forEach(c => {
-        const div = document.createElement("div");
-        div.className = "card-evento";
-        div.innerHTML = `<b>DIREÇÃO:</b> ${c.val().texto}`;
-        feed.prepend(div);
-    });
-});
-
-window.enviarFeedback = () => {
-    const t = document.getElementById("texto-feedback");
-    if(t.value.trim()) {
-        push(ref(db, "feedbacks_privados"), { aluno: nome, texto: t.value });
-        t.value = ""; alert("Feedback enviado com sucesso!");
-    }
-};
-
-window.votarHumor = (h) => { push(ref(db, "humor"), { nome, status: h }); alert("Humor registrado!"); };
 
 window.salvarIdeia = () => {
     const input = document.getElementById("input-ideia");
@@ -83,8 +51,32 @@ onValue(ref(db, "mural"), snap => {
     snap.forEach(c => {
         const d = c.val();
         const div = document.createElement("div");
-        div.className = "card-evento";
-        div.innerHTML = `<b>${d.autor}:</b> ${d.texto} <button onclick="votarIdeia('${c.key}')" style="float:right; border:none; background:var(--sec); color:white; padding:5px 10px; border-radius:8px;">👍 ${d.votos || 0}</button>`;
+        div.className = "insta-card";
+        div.innerHTML = `<b>${d.autor}:</b> ${d.texto} <button onclick="votarIdeia('${c.key}')" style="float:right; border:none; background:none; color:var(--primary); font-weight:bold;">❤️ ${d.votos || 0}</button>`;
         feed.appendChild(div);
     });
 });
+
+window.salvarAviso = () => {
+    if(prompt("Senha:") === "Chernobyl") {
+        const input = document.getElementById("input-aviso");
+        if(input.value.trim()) push(ref(db, "avisos"), { texto: input.value });
+        input.value = "";
+    }
+};
+
+onValue(ref(db, "avisos"), snap => {
+    const feed = document.getElementById("feed-avisos"); feed.innerHTML = "";
+    snap.forEach(c => {
+        const div = document.createElement("div"); div.className = "insta-card";
+        div.innerHTML = `<b>DIREÇÃO:</b> ${c.val().texto}`;
+        feed.prepend(div);
+    });
+});
+
+window.enviarFeedback = () => {
+    const t = document.getElementById("texto-feedback");
+    if(t.value.trim()) { push(ref(db, "feedbacks_privados"), { aluno: nome, texto: t.value }); t.value = ""; alert("Enviado!"); }
+};
+
+window.votarHumor = (h) => { push(ref(db, "humor"), { nome, status: h }); alert("Registrado!"); };
