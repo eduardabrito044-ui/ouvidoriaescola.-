@@ -14,7 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// --- LÓGICA DE TEMAS (DARK/LIGHT) ---
+// --- MODO CLARO/ESCURO ---
 window.toggleTheme = () => {
     const body = document.body;
     if (body.classList.contains("dark-mode")) {
@@ -25,16 +25,17 @@ window.toggleTheme = () => {
         localStorage.setItem("theme", "dark");
     }
 };
-// Carregar tema salvo
 if(localStorage.getItem("theme") === "light") document.body.classList.replace("dark-mode", "light-mode");
 
+// --- LOGIN E NAVEGAÇÃO ---
 let nome = localStorage.getItem("nome") || prompt("Qual o seu nome?") || "Anônimo";
 localStorage.setItem("nome", nome);
 
 window.mudarAba = (id) => {
     document.querySelectorAll(".aba").forEach(a => a.classList.remove("active"));
     document.querySelectorAll(".sidebar button").forEach(b => b.classList.remove("active-btn"));
-    const t = document.getElementById(id); if(t) t.classList.add("active");
+    const target = document.getElementById(id);
+    if(target) target.classList.add("active");
     if(document.getElementById("btn-"+id)) document.getElementById("btn-"+id).classList.add("active-btn");
 };
 
@@ -53,17 +54,17 @@ onValue(ref(db, "mensagens"), (snapshot) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = `msg-post ${d.nome === nome ? 'me' : 'outro'}`;
-        div.innerHTML = `<span class="msg-name">${d.nome}</span><span class="msg-text">${d.texto}</span><span class="msg-time">${d.hora}</span>`;
+        div.innerHTML = `<span style="font-size:0.7rem; font-weight:700; display:block;">${d.nome}</span>${d.texto}`;
         feed.appendChild(div);
     });
     feed.scrollTop = feed.scrollHeight;
 });
 
-// --- MURAL ---
+// --- MURAL COM RANKING (CURTIDAS) ---
 window.salvarIdeia = () => {
     const input = document.getElementById("input-ideia");
     if (!input.value.trim()) return;
-    push(ref(db, "mural"), { autor: nome, texto: input.value, votos: 0, data: new Date().toLocaleDateString() });
+    push(ref(db, "mural"), { autor: nome, texto: input.value, votos: 0 });
     input.value = "";
 };
 
@@ -81,7 +82,7 @@ onValue(ref(db, "mural"), (snapshot) => {
     ideias.forEach((d) => {
         const div = document.createElement("div");
         div.className = "msg-post outro"; div.style.maxWidth = "100%";
-        div.innerHTML = `<span class="msg-name">${d.autor}</span><span class="msg-text">${d.texto}</span>
+        div.innerHTML = `<strong>${d.autor}:</strong> ${d.texto} <br>
         <button class="btn-votar" onclick="votarIdeia('${d.id}')">👍 ${d.votos || 0}</button>`;
         feed.appendChild(div);
     });
@@ -89,11 +90,12 @@ onValue(ref(db, "mural"), (snapshot) => {
 
 // --- AVISOS (CHAVE CHERNOBYL) ---
 window.salvarAviso = () => {
-    if(prompt("Chave de acesso:") === "Chernobyl") {
+    if(prompt("Chave da Direção:") === "Chernobyl") {
         const input = document.getElementById("input-aviso");
-        push(ref(db, "avisos"), { texto: input.value, data: new Date().toLocaleString() });
+        if(!input.value.trim()) return;
+        push(ref(db, "avisos"), { texto: input.value, data: new Date().toLocaleDateString() });
         input.value = "";
-    } else { alert("Acesso negado."); }
+    } else { alert("Acesso negado!"); }
 };
 
 onValue(ref(db, "avisos"), (snapshot) => {
@@ -103,11 +105,15 @@ onValue(ref(db, "avisos"), (snapshot) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = "aviso-card";
-        div.innerHTML = `<strong>AVISO:</strong> ${d.texto} <br><small>${d.data}</small>`;
+        div.innerHTML = `<strong>OFICIAL:</strong> ${d.texto} <br><small>${d.data}</small>`;
         feed.prepend(div);
     });
 });
 
-// --- EXTRAS ---
+// --- HUMOR E FEEDBACK ---
 window.votarHumor = (v) => { push(ref(db, "humor"), { nome, voto: v }); alert("Votado!"); };
-window.enviarFeedback = () => { const t = document.getElementById("texto-feedback"); push(ref(db, "feedback"), { nome, texto: t.value }); t.value = ""; alert("Enviado!"); };
+window.enviarFeedback = () => {
+    const t = document.getElementById("texto-feedback");
+    push(ref(db, "feedback"), { nome, texto: t.value });
+    t.value = ""; alert("Enviado!");
+};
