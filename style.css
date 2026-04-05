@@ -2,27 +2,29 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 body { background: #000; color: #fff; display: flex; height: 100vh; overflow: hidden; }
 
-/* SIDEBAR / MENU */
+/* LOGO */
+.school-logo { width: 50px; height: 50px; object-fit: contain; margin-bottom: 10px; border-radius: 50%; }
+
 .sidebar { width: 220px; border-right: 1px solid #262626; padding: 20px 12px; display: flex; flex-direction: column; background: #000; z-index: 1001; }
-.logo-container h1 { font-size: 1.2rem; font-weight: 800; margin-bottom: 30px; text-align: center; }
+.logo-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; }
+.logo-container h1 { font-size: 1.2rem; font-weight: 800; }
+
 .nav-buttons { display: flex; flex-direction: column; gap: 5px; }
 .sidebar button { background: transparent; color: #fafafa; border: none; padding: 12px; border-radius: 8px; cursor: pointer; text-align: left; font-size: 1rem; }
 .sidebar button.active-btn { font-weight: 700; background: rgba(255, 255, 255, 0.1); }
 
-/* CONTEÚDO PRINCIPAL */
 .main-content { flex: 1; position: relative; height: 100vh; background: #000; }
 .aba { display: none; flex-direction: column; height: 100%; max-width: 700px; margin: 0 auto; position: relative; }
 .aba.active { display: flex; }
 .header-fixo { padding: 15px; border-bottom: 1px solid #262626; text-align: center; background: #000; }
 
-/* FEED */
-.feed { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding: 15px; gap: 12px; padding-bottom: 100px; }
+.feed { flex: 1; overflow-y: auto; display: flex; flex-direction: column; padding: 15px; gap: 12px; padding-bottom: 110px; }
 .msg-post { padding: 10px 14px; border-radius: 18px; max-width: 80%; display: flex; flex-direction: column; margin-bottom: 5px; cursor: pointer; transition: opacity 0.2s; }
 .msg-post:active { opacity: 0.7; }
 .msg-post.me { background: #3797f0; align-self: flex-end; border-bottom-right-radius: 4px; }
 .msg-post.outro { background: #262626; align-self: flex-start; border-bottom-left-radius: 4px; }
 
-/* Estilo da Resposta dentro do balão */
+/* Estilo da Resposta citada dentro do balão */
 .reply-inside { background: rgba(0, 0, 0, 0.2); border-left: 3px solid rgba(255, 255, 255, 0.5); padding: 5px 8px; border-radius: 8px; margin-bottom: 8px; font-size: 0.8rem; }
 .reply-inside small { font-weight: 700; display: block; margin-bottom: 2px; }
 
@@ -30,13 +32,11 @@ body { background: #000; color: #fff; display: flex; height: 100vh; overflow: hi
 .msg-text { font-size: 0.95rem; line-height: 1.3; }
 .msg-time { font-size: 0.6rem; opacity: 0.5; align-self: flex-end; margin-top: 4px; }
 
-/* BARRA DE ESCREVER FIXA */
 .footer-input { position: absolute; bottom: 0; left: 0; right: 0; padding: 15px; background: #000; border-top: 1px solid #262626; z-index: 1000; }
 .input-container { background: #121212; border: 1px solid #363636; border-radius: 25px; padding: 8px 18px; display: flex; align-items: center; }
 input { flex: 1; background: transparent; border: none; color: #fff; outline: none; font-size: 1rem; }
 .send-btn { background: transparent; color: #0095f6; border: none; font-weight: 700; cursor: pointer; padding-left: 10px; }
 
-/* OUTROS COMPONENTES */
 .content-scroll { flex: 1; overflow-y: auto; padding: 20px; }
 .emoji-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 .emoji-grid button { font-size: 2rem; padding: 20px; background: #121212; border: none; border-radius: 15px; cursor: pointer; }
@@ -46,8 +46,9 @@ textarea { width: 100%; height: 150px; background: #121212; border: 1px solid #2
 /* MOBILE */
 @media (max-width: 768px) {
     body { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #262626; padding: 10px; }
+    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #262626; padding: 10px; flex-direction: row; align-items: center; justify-content: space-between; }
+    .logo-container { flex-direction: row; margin-bottom: 0; gap: 10px; }
+    .school-logo { width: 35px; height: 35px; margin-bottom: 0; }
     .nav-buttons { flex-direction: row; overflow-x: auto; white-space: nowrap; }
-    .logo-container { display: none; }
     .footer-input { position: fixed; bottom: 0; }
 }
