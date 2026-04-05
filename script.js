@@ -17,7 +17,6 @@ const db = getDatabase(app);
 let nome = localStorage.getItem("nome") || prompt("Qual o seu nome?") || "Anônimo";
 localStorage.setItem("nome", nome);
 
-// Lógica de Resposta
 let responderInfo = null;
 
 window.mudarAba = (id) => {
@@ -27,7 +26,7 @@ window.mudarAba = (id) => {
     if(document.getElementById("btn-"+id)) document.getElementById("btn-"+id).classList.add("active-btn");
 };
 
-// Ativar a resposta ao clicar
+// ATIVAR RESPOSTA
 window.prepararResposta = (autor, texto) => {
     responderInfo = { autor, texto };
     const preview = document.getElementById("reply-preview");
@@ -70,7 +69,6 @@ onValue(ref(db, "mensagens"), (snapshot) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = `msg-post ${d.nome === nome ? 'me' : 'outro'}`;
-        
         div.onclick = () => prepararResposta(d.nome, d.texto);
 
         let html = `<span class="msg-name">${d.nome}</span>`;
@@ -100,6 +98,7 @@ onValue(ref(db, "mural"), (snapshot) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = "msg-post outro"; div.style.maxWidth = "100%";
+        // Correção para não dar undefined
         div.innerHTML = `<span class="msg-name">${d.autor || "Anônimo"}</span><span class="msg-text">${d.texto}</span><span class="msg-time">${d.data || ""}</span>`;
         feed.appendChild(div);
     });
