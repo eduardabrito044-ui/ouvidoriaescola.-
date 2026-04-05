@@ -14,7 +14,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// --- MODO CLARO/ESCURO ---
+// --- LÓGICA DE MODO CLARO/ESCURO ---
 window.toggleTheme = () => {
     const body = document.body;
     if (body.classList.contains("dark-mode")) {
@@ -27,19 +27,17 @@ window.toggleTheme = () => {
 };
 if(localStorage.getItem("theme") === "light") document.body.classList.replace("dark-mode", "light-mode");
 
-// --- LOGIN E NAVEGAÇÃO ---
 let nome = localStorage.getItem("nome") || prompt("Qual o seu nome?") || "Anônimo";
 localStorage.setItem("nome", nome);
 
 window.mudarAba = (id) => {
     document.querySelectorAll(".aba").forEach(a => a.classList.remove("active"));
     document.querySelectorAll(".sidebar button").forEach(b => b.classList.remove("active-btn"));
-    const target = document.getElementById(id);
-    if(target) target.classList.add("active");
+    const t = document.getElementById(id); if(t) t.classList.add("active");
     if(document.getElementById("btn-"+id)) document.getElementById("btn-"+id).classList.add("active-btn");
 };
 
-// --- CHAT ---
+// --- CHAT (MENSAGENS NORMAIS) ---
 window.salvarMensagem = () => {
     const input = document.getElementById("input-msg");
     if (!input.value.trim()) return;
@@ -54,13 +52,13 @@ onValue(ref(db, "mensagens"), (snapshot) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = `msg-post ${d.nome === nome ? 'me' : 'outro'}`;
-        div.innerHTML = `<span style="font-size:0.7rem; font-weight:700; display:block;">${d.nome}</span>${d.texto}`;
+        div.innerHTML = `<span class="msg-name" style="font-weight:700; font-size:0.7rem; display:block;">${d.nome}</span><span class="msg-text">${d.texto}</span>`;
         feed.appendChild(div);
     });
     feed.scrollTop = feed.scrollHeight;
 });
 
-// --- MURAL COM RANKING (CURTIDAS) ---
+// --- MURAL (RANKING POR CURTIDAS) ---
 window.salvarIdeia = () => {
     const input = document.getElementById("input-ideia");
     if (!input.value.trim()) return;
@@ -82,20 +80,20 @@ onValue(ref(db, "mural"), (snapshot) => {
     ideias.forEach((d) => {
         const div = document.createElement("div");
         div.className = "msg-post outro"; div.style.maxWidth = "100%";
-        div.innerHTML = `<strong>${d.autor}:</strong> ${d.texto} <br>
+        div.innerHTML = `<span class="msg-name" style="font-weight:700;">${d.autor}</span><span class="msg-text">${d.texto}</span>
         <button class="btn-votar" onclick="votarIdeia('${d.id}')">👍 ${d.votos || 0}</button>`;
         feed.appendChild(div);
     });
 });
 
-// --- AVISOS (CHAVE CHERNOBYL) ---
+// --- AVISOS (TRAVA CHERNOBYL) ---
 window.salvarAviso = () => {
-    if(prompt("Chave da Direção:") === "Chernobyl") {
+    if(prompt("Digite o nome de acesso:") === "Chernobyl") {
         const input = document.getElementById("input-aviso");
         if(!input.value.trim()) return;
         push(ref(db, "avisos"), { texto: input.value, data: new Date().toLocaleDateString() });
-        input.value = "";
-    } else { alert("Acesso negado!"); }
+        input.value = ""; alert("Aviso postado!");
+    } else { alert("Acesso negado."); }
 };
 
 onValue(ref(db, "avisos"), (snapshot) => {
@@ -105,12 +103,12 @@ onValue(ref(db, "avisos"), (snapshot) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = "aviso-card";
-        div.innerHTML = `<strong>OFICIAL:</strong> ${d.texto} <br><small>${d.data}</small>`;
+        div.innerHTML = `<strong>AVISO:</strong> ${d.texto}<br><small>${d.data}</small>`;
         feed.prepend(div);
     });
 });
 
-// --- HUMOR E FEEDBACK ---
+// --- FUNÇÕES DE HUMOR E FEEDBACK ---
 window.votarHumor = (v) => { push(ref(db, "humor"), { nome, voto: v }); alert("Votado!"); };
 window.enviarFeedback = () => {
     const t = document.getElementById("texto-feedback");
