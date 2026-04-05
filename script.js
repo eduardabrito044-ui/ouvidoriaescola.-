@@ -14,44 +14,72 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-let nome = localStorage.getItem("nome") || prompt("Como deseja ser chamado?") || "Anônimo";
+let nome = localStorage.getItem("nome") || prompt("Qual o seu nome?") || "Anônimo";
 localStorage.setItem("nome", nome);
 
-// SISTEMA DE ABAS
+// Lógica de Resposta
+let responderInfo = null;
+
 window.mudarAba = (id) => {
     document.querySelectorAll(".aba").forEach(a => a.classList.remove("active"));
     document.querySelectorAll(".sidebar button").forEach(b => b.classList.remove("active-btn"));
-    
     document.getElementById(id).classList.add("active");
-    const btnId = "btn-" + id;
-    if(document.getElementById(btnId)) document.getElementById(btnId).classList.add("active-btn");
+    if(document.getElementById("btn-"+id)) document.getElementById("btn-"+id).classList.add("active-btn");
+};
+
+// Ativar a resposta ao clicar
+window.prepararResposta = (autor, texto) => {
+    responderInfo = { autor, texto };
+    const preview = document.getElementById("reply-preview");
+    preview.style.display = "flex";
+    document.getElementById("reply-user").innerText = `Respondendo a ${autor}`;
+    document.getElementById("reply-text").innerText = texto;
+    document.getElementById("input-msg").focus();
+};
+
+window.cancelarResposta = () => {
+    responderInfo = null;
+    document.getElementById("reply-preview").style.display = "none";
 };
 
 // CHAT
 window.salvarMensagem = () => {
     const input = document.getElementById("input-msg");
     if (!input.value.trim()) return;
-    push(ref(db, "mensagens"), {
-        nome,
-        texto: input.value,
-        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    });
+
+    const dados = { 
+        nome, 
+        texto: input.value, 
+        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+    };
+
+    if (responderInfo) {
+        dados.respostaPara = responderInfo.autor;
+        dados.textoOriginal = responderInfo.texto;
+    }
+
+    push(ref(db, "mensagens"), dados);
     input.value = "";
+    cancelarResposta();
 };
 
 onValue(ref(db, "mensagens"), (snapshot) => {
     const feed = document.getElementById("feed-forum");
-    if(!feed) return;
-    feed.innerHTML = "";
+    if(!feed) return; feed.innerHTML = "";
     snapshot.forEach((child) => {
         const d = child.val();
         const div = document.createElement("div");
         div.className = `msg-post ${d.nome === nome ? 'me' : 'outro'}`;
-        div.innerHTML = `
-            <span class="msg-name">${d.nome}</span>
-            <span class="msg-text">${d.texto}</span>
-            <span class="msg-time">${d.hora}</span>
-        `;
+        
+        div.onclick = () => prepararResposta(d.nome, d.texto);
+
+        let html = `<span class="msg-name">${d.nome}</span>`;
+        if (d.respostaPara) {
+            html += `<div class="reply-inside"><small>↳ ${d.respostaPara}</small>${d.textoOriginal}</div>`;
+        }
+        html += `<span class="msg-text">${d.texto}</span><span class="msg-time">${d.hora}</span>`;
+        
+        div.innerHTML = html;
         feed.appendChild(div);
     });
     feed.scrollTop = feed.scrollHeight;
@@ -61,33 +89,26 @@ onValue(ref(db, "mensagens"), (snapshot) => {
 window.salvarIdeia = () => {
     const input = document.getElementById("input-ideia");
     if (!input.value.trim()) return;
-    push(ref(db, "mural"), {
-        autor: nome,
-        texto: input.value,
-        data: new Date().toLocaleDateString()
-    });
+    push(ref(db, "mural"), { autor: nome, texto: input.value, data: new Date().toLocaleDateString() });
     input.value = "";
-    alert("Enviado para o mural!");
 };
 
 onValue(ref(db, "mural"), (snapshot) => {
     const feed = document.getElementById("feed-mural");
-    if(!feed) return;
-    feed.innerHTML = "";
+    if(!feed) return; feed.innerHTML = "";
     snapshot.forEach((child) => {
         const d = child.val();
         const div = document.createElement("div");
-        div.className = "msg-post outro";
-        div.style.maxWidth = "100%";
-        div.innerHTML = `<b>${d.autor}</b><br>${d.texto}<br><small>${d.data}</small>`;
+        div.className = "msg-post outro"; div.style.maxWidth = "100%";
+        div.innerHTML = `<span class="msg-name">${d.autor || "Anônimo"}</span><span class="msg-text">${d.texto}</span><span class="msg-time">${d.data || ""}</span>`;
         feed.appendChild(div);
     });
+    feed.scrollTop = feed.scrollHeight;
 });
 
-// OUTRAS FUNÇÕES
-window.votarHumor = (tipo) => { push(ref(db, "humor"), { usuario: nome, voto: tipo }); alert("Voto registrado!"); };
+window.votarHumor = (v) => { push(ref(db, "humor"), { nome, voto: v }); alert("Votado!"); };
 window.enviarFeedback = () => {
-    const txt = document.getElementById("texto-feedback");
-    push(ref(db, "feedback"), { usuario: nome, comentario: txt.value });
-    txt.value = ""; alert("Enviado!");
+    const t = document.getElementById("texto-feedback");
+    push(ref(db, "feedback"), { nome, texto: t.value });
+    t.value = ""; alert("Enviado!");
 };
