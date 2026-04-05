@@ -14,117 +14,80 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-let nome = localStorage.getItem("nome");
-if (!nome) {
-    nome = prompt("Seu nome:") || "Anônimo";
-    localStorage.setItem("nome", nome);
-}
+let nome = localStorage.getItem("nome") || prompt("Como deseja ser chamado?") || "Anônimo";
+localStorage.setItem("nome", nome);
 
-// ABAS
+// SISTEMA DE ABAS
 window.mudarAba = (id) => {
     document.querySelectorAll(".aba").forEach(a => a.classList.remove("active"));
+    document.querySelectorAll(".sidebar button").forEach(b => b.classList.remove("active-btn"));
+    
     document.getElementById(id).classList.add("active");
+    const btnId = "btn-" + id;
+    if(document.getElementById(btnId)) document.getElementById(btnId).classList.add("active-btn");
 };
 
 // CHAT
-const chatRef = ref(db, "mensagens");
-
 window.salvarMensagem = () => {
     const input = document.getElementById("input-msg");
-    const texto = input.value.trim();
-    if (!texto) return;
-
-    push(chatRef, {
+    if (!input.value.trim()) return;
+    push(ref(db, "mensagens"), {
         nome,
-        texto,
-        hora: new Date().toLocaleTimeString()
+        texto: input.value,
+        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     });
-
     input.value = "";
 };
 
-onValue(chatRef, (snapshot) => {
+onValue(ref(db, "mensagens"), (snapshot) => {
     const feed = document.getElementById("feed-forum");
+    if(!feed) return;
     feed.innerHTML = "";
-
     snapshot.forEach((child) => {
-        const dados = child.val();
-
+        const d = child.val();
         const div = document.createElement("div");
-        div.className = "msg-post " + (dados.nome === nome ? "me" : "outro");
-
+        div.className = `msg-post ${d.nome === nome ? 'me' : 'outro'}`;
         div.innerHTML = `
-            <b>${dados.nome}</b><br>
-            ${dados.texto}<br>
-            <small>${dados.hora}</small>
+            <span class="msg-name">${d.nome}</span>
+            <span class="msg-text">${d.texto}</span>
+            <span class="msg-time">${d.hora}</span>
         `;
-
         feed.appendChild(div);
     });
-
-    setTimeout(() => {
-        feed.scrollTop = feed.scrollHeight;
-    }, 100);
+    feed.scrollTop = feed.scrollHeight;
 });
 
 // MURAL
-const muralRef = ref(db, "mural");
-
 window.salvarIdeia = () => {
     const input = document.getElementById("input-ideia");
-    const texto = input.value.trim();
-    if (!texto) return;
-
-    push(muralRef, {
+    if (!input.value.trim()) return;
+    push(ref(db, "mural"), {
         autor: nome,
-        texto,
+        texto: input.value,
         data: new Date().toLocaleDateString()
     });
-
     input.value = "";
+    alert("Enviado para o mural!");
 };
 
-onValue(muralRef, (snapshot) => {
+onValue(ref(db, "mural"), (snapshot) => {
     const feed = document.getElementById("feed-mural");
+    if(!feed) return;
     feed.innerHTML = "";
-
     snapshot.forEach((child) => {
-        const dados = child.val();
-
+        const d = child.val();
         const div = document.createElement("div");
         div.className = "msg-post outro";
-
-        div.innerHTML = `
-            <b>${dados.autor}</b><br>
-            ${dados.texto}<br>
-            <small>${dados.data}</small>
-        `;
-
+        div.style.maxWidth = "100%";
+        div.innerHTML = `<b>${d.autor}</b><br>${d.texto}<br><small>${d.data}</small>`;
         feed.appendChild(div);
     });
 });
 
-// HUMOR (EMOJIS FUNCIONANDO)
-window.votarHumor = (tipo) => {
-    push(ref(db, "humor"), {
-        usuario: nome,
-        voto: tipo,
-        data: new Date().toLocaleDateString()
-    });
-
-    alert("Voto registrado!");
-};
-
-// FEEDBACK
+// OUTRAS FUNÇÕES
+window.votarHumor = (tipo) => { push(ref(db, "humor"), { usuario: nome, voto: tipo }); alert("Voto registrado!"); };
 window.enviarFeedback = () => {
-    const texto = document.getElementById("texto-feedback").value.trim();
-    if (!texto) return;
-
-    push(ref(db, "feedback"), {
-        usuario: nome,
-        comentario: texto
-    });
-
-    document.getElementById("texto-feedback").value = "";
-    alert("Enviado!");
+    const txt = document.getElementById("texto-feedback");
+    push(ref(db, "feedback"), { usuario: nome, comentario: txt.value });
+    txt.value = ""; alert("Enviado!");
 };
