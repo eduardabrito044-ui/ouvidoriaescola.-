@@ -1,141 +1,181 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
-:root { --verde: #28a745; --azul: #007bff; --branco: #ffffff; }
+:root { 
+    --verde: #28a745; 
+    --azul: #007bff; 
+    --branco: #ffffff; 
+}
 
-.dark-mode { --bg: #000; --card: #1c1c1c; --text: #fff; --border: #262626; --input-bg: #121212; }
-.light-mode { --bg: #fff; --card: #f0f2f5; --text: #000; --border: #dbdbdb; --input-bg: #f0f2f5; }
+.dark-mode { 
+    --bg: #000; 
+    --card: #1c1c1c; 
+    --text: #fff; 
+    --border: #262626; 
+    --input-bg: #121212; 
+}
+
+.light-mode { 
+    --bg: #fff; 
+    --card: #f8f9fa; 
+    --text: #000; 
+    --border: #dbdbdb; 
+    --input-bg: #f0f2f5; 
+}
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-body { background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
 
-/* SIDEBAR E LOGO */
-.sidebar { width: 220px; border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; background: var(--bg); }
-.logo-container { display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
-.school-logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--verde); margin-bottom: 10px; object-fit: cover; background: white; }
-.logo-container h1 { font-size: 1rem; color: var(--verde); font-weight: 800; text-transform: uppercase; }
+body { 
+    background: var(--bg); 
+    color: var(--text); 
+    display: flex; 
+    height: 100vh; 
+    overflow: hidden; 
+}
 
-.nav-buttons button { background: transparent; color: var(--text); border: none; padding: 12px; text-align: left; cursor: pointer; width: 100%; border-radius: 8px; font-weight: 600; margin-bottom: 5px; }
-.nav-buttons button.active-btn { background: var(--azul); color: #fff; font-weight: 800; }
+/* --- SIDEBAR (BARRA SUPERIOR NO CELULAR) --- */
+.sidebar { 
+    width: 240px; 
+    border-right: 1px solid var(--border); 
+    padding: 20px; 
+    display: flex; 
+    flex-direction: column; 
+    background: var(--bg); 
+    z-index: 1001;
+    overflow: hidden;
+}
 
-#theme-toggle-fixed { position: fixed; bottom: 20px; left: 20px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer; z-index: 10000; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.logo-container { 
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 30px; 
+    padding-bottom: 15px; 
+    border-bottom: 1px solid var(--border); 
+    flex-shrink: 0;
+}
 
-/* MAIN CONTENT */
+.school-logo { 
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%; 
+    border: 2px solid var(--verde); 
+    margin-right: 10px; 
+    object-fit: cover; 
+    background: white; 
+}
+
+.logo-container h1 { 
+    font-size: 1.1rem; 
+    color: var(--branco); 
+    font-weight: 800; 
+}
+
+/* CONTAINER DOS BOTÕES */
+.nav-buttons { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+}
+
+.nav-buttons button { 
+    background: transparent; 
+    color: var(--text); 
+    border: none; 
+    padding: 12px 15px; 
+    text-align: left; 
+    cursor: pointer; 
+    border-radius: 10px; 
+    font-weight: 600; 
+    font-size: 1rem;
+    transition: 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ESTILO ATIVO (IGUAL À IMAGEM) */
+.nav-buttons button.active-btn { 
+    background: var(--card) !important;
+    color: var(--branco) !important; 
+    font-weight: 800 !important; 
+    border-bottom: 2px solid var(--branco);
+    border-radius: 8px 8px 0 0;
+}
+
+/* --- CONTEÚDO --- */
 .main-content { flex: 1; position: relative; display: flex; flex-direction: column; }
-.aba { display: none; height: 100%; flex-direction: column; max-width: 700px; margin: 0 auto; width: 100%; }
+.aba { display: none; height: 100%; flex-direction: column; width: 100%; }
 .aba.active { display: flex; }
-.header-fixo { padding: 15px; border-bottom: 1px solid var(--border); text-align: center; color: var(--verde); font-weight: 800; background: var(--bg); }
+.header-fixo { padding: 20px; text-align: center; color: var(--branco); font-weight: 800; font-size: 1.5rem; background: var(--bg); }
 
-/* FEED ESTILO INSTAGRAM */
-.feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 110px; }
-.msg-post { padding: 12px 16px; border-radius: 20px; max-width: 80%; position: relative; display: flex; flex-direction: column; }
-.msg-post.me { background: var(--azul); color: #fff; align-self: flex-end; border-bottom-right-radius: 5px; }
-.msg-post.outro { background: var(--card); color: var(--text); align-self: flex-start; border-bottom-left-radius: 5px; border: 1px solid var(--border); }
+/* CHAT */
+.feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 120px; }
+.msg-post { padding: 12px; border-radius: 15px; max-width: 80%; background: var(--card); border: 1px solid var(--border); }
+.msg-name { font-size: 0.75rem; font-weight: 800; color: #aaa; margin-bottom: 5px; }
+.msg-time { font-size: 0.65rem; opacity: 0.5; margin-top: 5px; text-align: right; }
 
-.msg-name { font-size: 0.75rem; font-weight: 800; margin-bottom: 4px; color: var(--verde); cursor: pointer; }
-.me .msg-name { color: #e0e0e0; }
-.msg-text { font-size: 0.95rem; line-height: 1.4; }
-.msg-time { font-size: 0.65rem; align-self: flex-end; margin-top: 4px; opacity: 0.6; }
+/* INPUT */
+.footer-input { position: absolute; bottom: 0; width: 100%; padding: 15px; background: var(--bg); }
+.input-container { background: var(--input-bg); border: 1px solid var(--border); border-radius: 25px; padding: 10px 20px; display: flex; }
+input { flex: 1; background: transparent; border: none; color: var(--text); outline: none; }
+.send-btn { background: transparent; color: var(--azul); border: none; font-weight: 800; cursor: pointer; }
 
-/* RANKING E EVENTOS */
-#feed-mural .msg-post:first-child { border: 2px solid #FFD700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-.item-evento { padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; background: var(--card); }
-.item-evento.olympics { border: 2px solid #FFD700; border-left: 8px solid #FFD700; }
-
-/* FOOTER INPUT */
-.footer-input { position: absolute; bottom: 0; width: 100%; padding: 15px; background: var(--bg); border-top: 1px solid var(--border); z-index: 1000; }
-.input-container { background: var(--input-bg); border: 1px solid var(--border); border-radius: 30px; padding: 10px 20px; display: flex; align-items: center; }
-input { flex: 1; background: transparent; border: none; color: var(--text); outline: none; font-size: 1rem; }
-.send-btn { background: transparent; color: var(--azul); border: none; font-weight: 800; cursor: pointer; padding-left: 10px; }
-
-/* MOBILE */
+/* --- AJUSTE CELULAR (EXTRITAMENTE IGUAL À IMAGEM) --- */
 @media (max-width: 768px) {
-    body { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; flex-direction: row; padding: 10px; border-bottom: 1px solid var(--border); }
-    .logo-container { display: none; }
-    .nav-buttons { flex-direction: row; overflow-x: auto; gap: 5px; width: 100%; }
-    .nav-buttons button { padding: 8px 15px; white-space: nowrap; font-size: 0.85rem; }
-    #theme-toggle-fixed { bottom: 85px; left: 15px; width: 40px; height: 40px; }
-    .footer-input { position: fixed; }
-}
+    body { flex-direction: column !important; }
 
-.emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 20px; }
-.emoji-grid button { font-size: 2rem; padding: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 15px; cursor: pointer; }
-textarea { width: 100%; height: 120px; background: var(--input-bg); border: 1px solid var(--border); color: var(--text); padding: 15px; border-radius: 15px; margin: 20px 0; outline: none; }
-.btn-insta { width: 100%; padding: 15px; background: var(--verde); color: #fff; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; }
-/* --- AJUSTE PARA LOGO APARECER SEMPRE NO CELULAR --- */
-@media (max-width: 768px) {
-    /* Faz a barra lateral virar um cabeçalho no topo */
-    .sidebar {
-        width: 100% !important;
-        height: auto !important;
-        flex-direction: column !important; /* Logo em cima, botões embaixo */
-        padding: 10px !important;
-        border-right: none !important;
+    /* Barra Superior fixa no topo */
+    .sidebar { 
+        width: 100% !important; 
+        height: 65px !important; 
+        padding: 0 10px !important; 
+        border-right: none !important; 
         border-bottom: 1px solid var(--border) !important;
-        position: relative !important;
-    }
-
-    /* Garante que a logo e o nome da escola apareçam */
-    .logo-container {
-        display: flex !important; /* Força a exibição */
-        flex-direction: row !important; /* Logo ao lado do texto */
+        flex-direction: row !important; /* Logo e Botões na mesma linha */
         align-items: center !important;
-        justify-content: center !important;
-        margin-bottom: 10px !important;
-        padding-bottom: 5px !important;
-        border-bottom: none !important;
+        justify-content: flex-start !important;
+        overflow-y: hidden !important;
     }
 
-    .school-logo {
-        width: 45px !important;
-        height: 45px !important;
-        margin: 0 10px 0 0 !important; /* Espaço à direita da logo */
+    /* Logo fixa na esquerda */
+    .logo-container { 
+        margin-bottom: 0 !important; 
+        padding-bottom: 0 !important; 
+        border: none !important;
+        margin-right: 15px !important;
+        flex-shrink: 0 !important;
     }
 
-    .logo-container h1 {
-        display: block !important; /* Garante que o texto 'Ouvidoria' apareça */
-        font-size: 1rem !important;
+    .school-logo { width: 35px !important; height: 35px !important; }
+    .logo-container h1 { font-size: 1rem !important; }
+
+    /* Botões roláveis à frente da logo */
+    .nav-buttons { 
+        flex-direction: row !important; 
+        gap: 10px !important; 
+        overflow-x: auto !important; /* Habilita o arrastar para o lado */
+        flex: 1 !important;
+        height: 100% !important;
+        align-items: center !important;
+        scrollbar-width: none; /* Esconde barra no Firefox */
     }
 
-    /* Organiza as abas em uma linha que desliza (Scroll) */
-    .nav-buttons {
-        flex-direction: row !important;
-        overflow-x: auto !important; /* Permite arrastar para o lado */
-        width: 100% !important;
-        gap: 10px !important;
-        padding-bottom: 5px !important;
-        -webkit-overflow-scrolling: touch; /* Deixa o deslize suave no iPhone */
+    .nav-buttons::-webkit-scrollbar { display: none; } /* Esconde barra no Chrome/Safari */
+
+    .nav-buttons button { 
+        padding: 8px 15px !important; 
+        font-size: 0.9rem !important;
+        border-radius: 8px !important;
     }
 
-    .nav-buttons::-webkit-scrollbar {
-        display: none; /* Esconde a barrinha de scroll para ficar mais limpo */
+    .nav-buttons button.active-btn {
+        background: rgba(255,255,255,0.1) !important;
+        border-bottom: 2px solid var(--branco) !important;
     }
 
-    .nav-buttons button {
-        white-space: nowrap !important; /* Impede o texto de quebrar linha */
-        padding: 8px 15px !important;
-        font-size: 0.85rem !important;
-        background: var(--card) !important; /* Dá um destaque nos botões */
-    }
-
-    /* Ajuste do conteúdo para não ficar por baixo do cabeçalho */
-    .main-content {
-        height: calc(100vh - 120px) !important;
-    }
-
-    /* Botão de tema sobe um pouco para não cobrir o chat */
-    #theme-toggle-fixed {
-        bottom: 90px !important;
-        left: 15px !important;
-        width: 40px !important;
-        height: 40px !important;
-    }
+    .main-content { height: calc(100vh - 65px) !important; }
+    .header-fixo { font-size: 1.2rem !important; padding: 15px !important; }
+    .footer-input { position: fixed !important; }
 }
 
-/* --- ESTILO DAS ABAS IGUAL À FOTO (BOLD E CLEAN) --- */
-.nav-buttons button.active-btn {
-    color: var(--azul) !important;
-    font-weight: 800 !important; /* Negrito pesado igual ao Instagram */
-    border-bottom: 2px solid var(--azul); /* Linha indicadora */
-    background: transparent !important;
-}
+#theme-toggle-fixed { position: fixed; bottom: 80px; left: 15px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--card); color: var(--text); z-index: 9999; cursor: pointer; display: flex; align-items: center; justify-content: center; }
