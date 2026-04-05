@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
+/* --- PALETA DE CORES --- */
 :root { 
     --verde: #28a745; 
     --azul: #007bff; 
@@ -9,15 +10,17 @@
 .dark-mode { 
     --bg: #000; 
     --card: #1c1c1c; 
+    --card-hover: #262626;
     --text: #fff; 
-    --border: #262626; 
+    --border: #333; 
     --input-bg: #121212; 
 }
 
 .light-mode { 
-    --bg: #fff; 
-    --card: #f8f9fa; 
-    --text: #000; 
+    --bg: #f0f2f5; 
+    --card: #ffffff; 
+    --card-hover: #f8f9fa;
+    --text: #1c1e21; 
     --border: #dbdbdb; 
     --input-bg: #f0f2f5; 
 }
@@ -32,150 +35,187 @@ body {
     overflow: hidden; 
 }
 
-/* --- SIDEBAR (BARRA SUPERIOR NO CELULAR) --- */
+/* --- SIDEBAR (PC) --- */
 .sidebar { 
-    width: 240px; 
+    width: 260px; 
     border-right: 1px solid var(--border); 
-    padding: 20px; 
+    padding: 25px 15px; 
     display: flex; 
     flex-direction: column; 
-    background: var(--bg); 
+    background: var(--card); 
     z-index: 1001;
-    overflow: hidden;
 }
 
 .logo-container { 
     display: flex; 
     align-items: center; 
     margin-bottom: 30px; 
-    padding-bottom: 15px; 
-    border-bottom: 1px solid var(--border); 
-    flex-shrink: 0;
+    padding-bottom: 20px; 
+    border-bottom: 2px solid var(--verde); 
 }
 
 .school-logo { 
-    width: 45px; 
-    height: 45px; 
+    width: 50px; 
+    height: 50px; 
     border-radius: 50%; 
     border: 2px solid var(--verde); 
-    margin-right: 10px; 
+    margin-right: 12px; 
     object-fit: cover; 
     background: white; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .logo-container h1 { 
-    font-size: 1.1rem; 
-    color: var(--branco); 
+    font-size: 1.2rem; 
+    color: var(--verde); 
     font-weight: 800; 
+    letter-spacing: -0.5px;
 }
 
-/* CONTAINER DOS BOTÕES */
-.nav-buttons { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 5px; 
-}
+/* BOTÕES DAS ABAS */
+.nav-buttons { display: flex; flex-direction: column; gap: 8px; }
 
 .nav-buttons button { 
     background: transparent; 
     color: var(--text); 
     border: none; 
-    padding: 12px 15px; 
+    padding: 14px 18px; 
     text-align: left; 
     cursor: pointer; 
-    border-radius: 10px; 
+    border-radius: 12px; 
     font-weight: 600; 
-    font-size: 1rem;
-    transition: 0.2s;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
     white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
-/* ESTILO ATIVO (IGUAL À IMAGEM) */
+.nav-buttons button:hover { background: var(--card-hover); transform: translateX(5px); }
+
 .nav-buttons button.active-btn { 
-    background: var(--card) !important;
     color: var(--branco) !important; 
     font-weight: 800 !important; 
-    border-bottom: 2px solid var(--branco);
-    border-radius: 8px 8px 0 0;
+    background: var(--azul) !important;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
-/* --- CONTEÚDO --- */
-.main-content { flex: 1; position: relative; display: flex; flex-direction: column; }
-.aba { display: none; height: 100%; flex-direction: column; width: 100%; }
+/* --- CONTEÚDO PRINCIPAL --- */
+.main-content { flex: 1; position: relative; display: flex; flex-direction: column; padding: 20px; gap: 20px; }
+
+.aba { display: none; height: 100%; flex-direction: column; width: 100%; max-width: 850px; margin: 0 auto; }
 .aba.active { display: flex; }
-.header-fixo { padding: 20px; text-align: center; color: var(--branco); font-weight: 800; font-size: 1.5rem; background: var(--bg); }
+
+/* BALÃO/CARD QUE CERCA TUDO */
+.content-wrapper {
+    background: var(--card);
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.header-fixo { 
+    padding: 20px; 
+    text-align: center; 
+    color: var(--verde); 
+    font-weight: 800; 
+    font-size: 1.4rem; 
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+}
 
 /* CHAT */
-.feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 120px; }
-.msg-post { padding: 12px; border-radius: 15px; max-width: 80%; background: var(--card); border: 1px solid var(--border); }
-.msg-name { font-size: 0.75rem; font-weight: 800; color: #aaa; margin-bottom: 5px; }
-.msg-time { font-size: 0.65rem; opacity: 0.5; margin-top: 5px; text-align: right; }
+.feed { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 100px; }
 
-/* INPUT */
-.footer-input { position: absolute; bottom: 0; width: 100%; padding: 15px; background: var(--bg); }
-.input-container { background: var(--input-bg); border: 1px solid var(--border); border-radius: 25px; padding: 10px 20px; display: flex; }
-input { flex: 1; background: transparent; border: none; color: var(--text); outline: none; }
-.send-btn { background: transparent; color: var(--azul); border: none; font-weight: 800; cursor: pointer; }
-
-/* --- AJUSTE CELULAR (EXTRITAMENTE IGUAL À IMAGEM) --- */
-@media (max-width: 768px) {
-    body { flex-direction: column !important; }
-
-    /* Barra Superior fixa no topo */
-    .sidebar { 
-        width: 100% !important; 
-        height: 65px !important; 
-        padding: 0 10px !important; 
-        border-right: none !important; 
-        border-bottom: 1px solid var(--border) !important;
-        flex-direction: row !important; /* Logo e Botões na mesma linha */
-        align-items: center !important;
-        justify-content: flex-start !important;
-        overflow-y: hidden !important;
-    }
-
-    /* Logo fixa na esquerda */
-    .logo-container { 
-        margin-bottom: 0 !important; 
-        padding-bottom: 0 !important; 
-        border: none !important;
-        margin-right: 15px !important;
-        flex-shrink: 0 !important;
-    }
-
-    .school-logo { width: 35px !important; height: 35px !important; }
-    .logo-container h1 { font-size: 1rem !important; }
-
-    /* Botões roláveis à frente da logo */
-    .nav-buttons { 
-        flex-direction: row !important; 
-        gap: 10px !important; 
-        overflow-x: auto !important; /* Habilita o arrastar para o lado */
-        flex: 1 !important;
-        height: 100% !important;
-        align-items: center !important;
-        scrollbar-width: none; /* Esconde barra no Firefox */
-    }
-
-    .nav-buttons::-webkit-scrollbar { display: none; } /* Esconde barra no Chrome/Safari */
-
-    .nav-buttons button { 
-        padding: 8px 15px !important; 
-        font-size: 0.9rem !important;
-        border-radius: 8px !important;
-    }
-
-    .nav-buttons button.active-btn {
-        background: rgba(255,255,255,0.1) !important;
-        border-bottom: 2px solid var(--branco) !important;
-    }
-
-    .main-content { height: calc(100vh - 65px) !important; }
-    .header-fixo { font-size: 1.2rem !important; padding: 15px !important; }
-    .footer-input { position: fixed !important; }
+.msg-post { 
+    padding: 12px 18px; 
+    border-radius: 20px; 
+    max-width: 75%; 
+    background: var(--input-bg); 
+    border: 1px solid var(--border); 
+    transition: 0.2s;
 }
 
-#theme-toggle-fixed { position: fixed; bottom: 80px; left: 15px; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); background: var(--card); color: var(--text); z-index: 9999; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.msg-post.me { background: var(--azul); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; border: none; box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); }
+.msg-post.outro { align-self: flex-start; border-bottom-left-radius: 4px; }
+
+.msg-name { font-size: 0.75rem; font-weight: 800; color: var(--verde); margin-bottom: 6px; display: block; }
+.me .msg-name { color: #e0e0e0; }
+.msg-text { font-size: 0.95rem; line-height: 1.5; }
+.msg-time { font-size: 0.65rem; opacity: 0.6; margin-top: 6px; text-align: right; display: block; }
+
+/* FORMULÁRIO DE OPINIÃO (MELHORADO) */
+.feedback-container {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+textarea { 
+    width: 100%; 
+    max-width: 500px;
+    height: 180px; 
+    background: var(--input-bg); 
+    border: 2px solid var(--border); 
+    color: var(--text); 
+    padding: 18px; 
+    border-radius: 15px; 
+    outline: none; 
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+textarea:focus { border-color: var(--verde); box-shadow: 0 0 10px rgba(40, 167, 69, 0.1); }
+
+.btn-insta { 
+    width: 100%; 
+    max-width: 500px;
+    padding: 16px; 
+    background: var(--verde); 
+    color: #fff; 
+    border: none; 
+    border-radius: 12px; 
+    font-weight: 800; 
+    cursor: pointer; 
+    transition: 0.3s;
+    font-size: 1rem;
+}
+
+.btn-insta:hover { background: #218838; transform: translateY(-2px); }
+
+/* BARRA DE DIGITAR CHAT */
+.footer-input { padding: 15px 20px; background: var(--card); border-top: 1px solid var(--border); }
+.input-container { background: var(--input-bg); border: 1.5px solid var(--border); border-radius: 30px; padding: 12px 22px; display: flex; align-items: center; }
+input { flex: 1; background: transparent; border: none; color: var(--text); outline: none; font-size: 1rem; }
+.send-btn { background: transparent; color: var(--azul); border: none; font-weight: 800; cursor: pointer; font-size: 1rem; }
+
+/* --- AJUSTE CELULAR --- */
+@media (max-width: 768px) {
+    .main-content { padding: 10px; gap: 10px; }
+    
+    .sidebar { 
+        width: 100% !important; 
+        height: 70px !important; 
+        padding: 0 15px !important; 
+        flex-direction: row !important; 
+        align-items: center !important;
+        border-bottom: 2px solid var(--verde) !important;
+    }
+
+    .logo-container { margin: 0 15px 0 0 !important; border: none !important; padding: 0 !important; }
+    .school-logo { width: 35px !important; height: 35px !important; }
+    .logo-container h1 { font-size: 0.9rem !important; }
+
+    .nav-buttons { flex-direction: row !important; overflow-x: auto !important; flex: 1 !important; scrollbar-width: none; }
+    .nav-buttons button { padding: 8px 12px !important; font-size: 0.85rem !important; }
+    .nav-buttons button.active-btn { border-radius: 10px !important; }
+
+    .main-content { height: calc(100vh - 70px) !important; }
+    .header-fixo { font-size: 1.1rem !important; padding: 15px !important; }
+}
+
+#theme-toggle-fixed { position: fixed; bottom: 90px; left: 20px; width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--border); background: var(--card); color: var(--text); z-index: 9999; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
