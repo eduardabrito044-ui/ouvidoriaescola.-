@@ -48,29 +48,28 @@
         <section id="feedback" class="aba">
             <div class="header-aba"><h2>📝 Feedback Privado</h2></div>
             <div class="content-scroll p-20">
-                <p style="margin-bottom:10px; color:#666;">Enviado direto para a Eduarda.</p>
-                <textarea id="texto-feedback" placeholder="O que a escola deve melhorar?"></textarea>
-                <button class="btn-privado" onclick="enviarFeedback()">Enviar Feedback</button>
+                <textarea id="texto-feedback" placeholder="Sua sugestão privada..."></textarea>
+                <button class="btn-privado" onclick="enviarFeedback()">Enviar</button>
             </div>
         </section>
 
         <section id="avisos" class="aba">
-            <div class="header-aba"><h2>📢 Alertas da Direção</h2></div>
+            <div class="header-aba"><h2>📢 Alertas</h2></div>
             <div id="feed-avisos" class="feed"></div>
             <div class="footer-input">
                 <div class="input-container">
-                    <input type="text" id="input-aviso" placeholder="Postar aviso (Chave necessária)...">
+                    <input type="text" id="input-aviso" placeholder="Postar (Senha necessária)...">
                     <button class="send-btn" onclick="salvarAviso()">Postar</button>
                 </div>
             </div>
         </section>
 
         <section id="sentimentos" class="aba">
-            <div class="header-aba"><h2>🎭 Como você está hoje?</h2></div>
+            <div class="header-aba"><h2>🎭 Humor</h2></div>
             <div class="emoji-grid-especial">
                 <div class="emoji-item" onclick="votarHumor('😰')"><span>😰</span><p>Ansioso</p></div>
                 <div class="emoji-item" onclick="votarHumor('🤯')"><span>🤯</span><p>Explodindo</p></div>
-                <div class="emoji-item" onclick="votarHumor('😡')"><span>😡</span><p>Com Raiva</p></div>
+                <div class="emoji-item" onclick="votarHumor('😡')"><span>😡</span><p>Raiva</p></div>
                 <div class="emoji-item" onclick="votarHumor('😢')"><span>😢</span><p>Triste</p></div>
                 <div class="emoji-item" onclick="votarHumor('😴')"><span>😴</span><p>Preguiça</p></div>
                 <div class="emoji-item" onclick="votarHumor('😊')"><span>😊</span><p>Feliz</p></div>
@@ -79,22 +78,17 @@
         </section>
 
         <section id="cronograma" class="aba">
-            <div class="header-aba"><h2>📅 Cronograma Escolar</h2></div>
+            <div class="header-aba"><h2>📅 Cronograma</h2></div>
             <div class="content-scroll p-20">
-                <h3 style="color:#ffd700; margin-bottom:10px;">🏆 Olimpíadas (CETI JM)</h3>
-                <div class="card-evento olympics">01/05 - Abertura Oficial 🏅</div>
-                <div class="card-evento olympics">05/05 - Início das Provas 🏆</div>
-                <h3 style="color:#28a745; margin-top:20px; margin-bottom:10px;">📚 Eventos</h3>
-                <div class="card-evento school">20/05 - Feira Técnica</div>
+                <div class="card-evento olympics">01/05 - Abertura Olimpíadas 🥇</div>
             </div>
         </section>
 
         <section id="contatos" class="aba">
-            <div class="header-aba"><h2>📱 Canais de Contato</h2></div>
+            <div class="header-aba"><h2>📱 Contatos</h2></div>
             <div class="content-scroll p-20">
-                <p style="margin-bottom:15px; color:#666;">Fale conosco pelos canais oficiais:</p>
-                <a href="https://wa.me/5589981259467" class="card-contato" target="_blank">WhatsApp Direto 📱</a>
-                <a href="mailto:eduardabrito044@gmail.com" class="card-contato">E-mail Ouvidoria ✉️</a>
+                <a href="https://wa.me/5589981259467" class="card-contato">WhatsApp 📱</a>
+                <a href="mailto:eduardabrito044@gmail.com" class="card-contato">E-mail ✉️</a>
             </div>
         </section>
     </main>
