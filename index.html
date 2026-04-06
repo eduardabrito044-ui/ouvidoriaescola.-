@@ -21,7 +21,13 @@
 
     <main class="main-content">
         <section id="forum" class="aba active">
-            <div class="header-fixo"><h2>Direct dos Alunos</h2></div>
+            <div class="chat-header-info">
+                <img src="logo.png" class="chat-avatar">
+                <div class="chat-status">
+                    <h2>Direct CETI JM</h2>
+                    <span>Online</span>
+                </div>
+            </div>
             <div id="feed-forum" class="feed"></div>
             <div class="footer-input">
                 <div id="reply-preview" class="reply-container">
@@ -30,54 +36,39 @@
                 </div>
                 <div class="input-wrapper">
                     <input type="text" id="input-msg" placeholder="Enviar mensagem...">
-                    <button class="send-btn" onclick="salvarMensagem()">Enviar</button>
+                    <button class="send-link" onclick="salvarMensagem()">Enviar</button>
                 </div>
             </div>
         </section>
 
         <section id="mural" class="aba">
-            <div class="header-fixo"><h2>💡 Mural de Ideias</h2></div>
             <div id="feed-mural" class="feed"></div>
             <div class="footer-input">
                 <div class="input-wrapper">
-                    <input type="text" id="input-ideia" placeholder="Sugira algo...">
-                    <button class="send-btn" onclick="salvarIdeia()">Postar</button>
+                    <input type="text" id="input-ideia" placeholder="Nova ideia...">
+                    <button class="send-link" onclick="salvarIdeia()">Postar</button>
                 </div>
             </div>
         </section>
 
-        <section id="sentimentos" class="aba">
-            <div class="header-fixo"><h2>Como estás hoje?</h2></div>
-            <div class="content-scroll">
-                <div class="emoji-grid">
-                    <button onclick="enviarHumor('ansioso')">😰<br><small>Ansioso</small></button>
-                    <button onclick="enviarHumor('feliz')">😊<br><small>Feliz</small></button>
-                    <button onclick="enviarHumor('triste')">😢<br><small>Triste</small></button>
-                    <button onclick="enviarHumor('raiva')">😡<br><small>Raiva</small></button>
-                </div>
+        <section id="feedback" class="aba">
+            <div class="p-20">
+                <h2 style="margin-bottom:15px">Sua Opinião</h2>
+                <textarea id="texto-feedback" placeholder="Escreva aqui..."></textarea>
+                <button onclick="enviarFeedback()" class="insta-btn">Enviar para Eduarda</button>
             </div>
         </section>
 
         <section id="cronograma" class="aba">
-            <div class="header-fixo"><h2>📅 Cronograma Escolar</h2></div>
-            <div class="content-scroll">
-                <h3 class="titulo-secao">🏆 Olimpíadas (CETI JM)</h3>
-                <div class="item-evento olympics">01/05 - Abertura das Olimpíadas 🥇</div>
-                <div class="item-evento olympics">05/05 - Competições e Jogos 🏅</div>
-                <h3 class="titulo-secao">📖 Outros Eventos</h3>
-                <div class="item-evento">20/05 - Feira Técnica 📚</div>
-            </div>
-        </section>
-
-        <section id="contatos" class="aba">
-            <div class="header-fixo"><h2>📱 Contatos</h2></div>
             <div class="p-20">
-                <a href="https://wa.me/seunumeroaqui" class="btn-insta" style="text-decoration: none; text-align: center; display: block; margin-bottom: 10px;">WhatsApp Direto 📲</a>
-                <button class="btn-insta" style="background: #555;">E-mail 📩</button>
+                <h2 class="gold-text">🏆 Olimpíadas</h2>
+                <div class="card-gold">🥇 01/05 - Abertura Oficial</div>
+                <div class="card-gold">🏅 05/05 - Início das Competições</div>
+                <h2 style="margin-top:20px">📅 Agenda Geral</h2>
+                <div class="card-simple">20/05 - Entrega de Trabalhos</div>
             </div>
         </section>
     </main>
-
     <script type="module" src="script.js"></script>
 </body>
 </html>
