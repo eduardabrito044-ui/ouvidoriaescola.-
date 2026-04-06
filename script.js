@@ -11,9 +11,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-let nome = localStorage.getItem("nome") || prompt("Qual seu nome?") || "Aluno";
+let nome = localStorage.getItem("nome") || prompt("Qual o seu nome?") || "Estudante";
 localStorage.setItem("nome", nome);
 
+// Navegação de Abas
 window.mudarAba = (id) => {
     document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
     document.querySelectorAll('.menu-scroll button').forEach(b => b.classList.remove('active-btn'));
@@ -21,25 +22,27 @@ window.mudarAba = (id) => {
     if(document.getElementById('btn-'+id)) document.getElementById('btn-'+id).classList.add('active-btn');
 };
 
+// Alternar Tema
 window.toggleTheme = () => document.body.classList.toggle('dark-mode');
 
+// Sistema de Confirmação (Toast)
 window.mostrarToast = (msg) => {
     const t = document.getElementById("toast");
     t.innerText = msg; t.style.display = "block";
     setTimeout(() => { t.style.display = "none"; }, 2500);
 };
 
+// 1. Chat
 window.salvarMensagem = () => {
     const input = document.getElementById("input-msg");
     if (!input.value.trim()) return;
     push(ref(db, "mensagens"), { nome, texto: input.value, timestamp: serverTimestamp() });
     input.value = "";
-    mostrarToast("Mensagem enviada! ✓");
+    mostrarToast("Direct enviado! ✓");
 };
 
 onValue(ref(db, "mensagens"), snap => {
-    const feed = document.getElementById("feed-forum"); if(!feed) return;
-    feed.innerHTML = "";
+    const feed = document.getElementById("feed-forum"); feed.innerHTML = "";
     snap.forEach(c => {
         const d = c.val();
         const div = document.createElement("div");
@@ -50,7 +53,34 @@ onValue(ref(db, "mensagens"), snap => {
     feed.scrollTop = feed.scrollHeight;
 });
 
+// 2. Humor
 window.votarHumor = (h) => {
-    push(ref(db, "humor"), { usuario: nome, voto: h });
-    mostrarToast("Votado com sucesso! ✓");
+    push(ref(db, "humor"), { usuario: nome, voto: h, data: new Date().toISOString() });
+    mostrarToast("Humor registrado! ✓");
 };
+
+// 3. Alertas (Senha Chernobyl)
+window.salvarAviso = () => {
+    const chave = prompt("Chave de Segurança:");
+    if (chave === "Chernobyl") {
+        const input = document.getElementById("input-aviso");
+        if(input.value.trim()){
+            push(ref(db, "avisos"), { msg: input.value, data: new Date().toLocaleDateString() });
+            input.value = "";
+            mostrarToast("Alerta publicado! ✓");
+        }
+    } else { alert("Chave incorreta!"); }
+};
+
+onValue(ref(db, "avisos"), snap => {
+    const feed = document.getElementById("feed-avisos"); feed.innerHTML = "";
+    snap.forEach(c => {
+        const d = c.val();
+        const div = document.createElement("div");
+        div.className = "bubble outro"; div.style.width = "100%"; div.style.borderLeft = "5px solid #ffd700";
+        div.innerHTML = `<strong>⚠️ ${d.data}</strong><p>${d.msg}</p>`;
+        feed.prepend(div);
+    });
+});
+
+// Outras funções seguem o padrão mostrarToast ao finalizar...
