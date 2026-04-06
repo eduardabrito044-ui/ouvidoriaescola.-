@@ -13,53 +13,48 @@ body.dark-mode {
 body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; position: fixed; width: 100%; }
 
 /* Menu Superior */
-.top-menu { background: var(--primary); padding: 10px 0; border-bottom: 3px solid var(--accent); flex-shrink: 0; }
+.top-menu { background: var(--primary); padding: 10px 0; border-bottom: 3px solid var(--accent); flex-shrink: 0; z-index: 1001; }
 .menu-scroll { display: flex; overflow-x: auto; gap: 8px; padding: 0 15px; scrollbar-width: none; }
 .menu-scroll::-webkit-scrollbar { display: none; }
-.menu-scroll button { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 12px; }
-.menu-scroll button.active-btn { background: white; color: var(--primary); }
+.menu-scroll button { background: rgba(255,255,255,0.15); border: none; color: white; padding: 8px 16px; border-radius: 20px; white-space: nowrap; font-weight: 600; font-size: 12px; transition: 0.3s; }
+.menu-scroll button.active-btn { background: white; color: var(--primary); transform: scale(1.05); }
 
-/* HEADER FIXO COM LOGO NO CANTINHO */
-.header-escola { 
-    padding: 10px 15px; 
-    border-bottom: 1px solid var(--border); 
-    display: flex; 
-    align-items: center; 
-    gap: 12px; 
-    background: var(--bg);
-    flex-shrink: 0; /* Impede que o header suma ao rolar */
-}
+/* Header com Logo Fixo */
+.header-escola-fixo { display: flex; align-items: center; padding: 12px 15px; border-bottom: 1px solid var(--border); gap: 12px; background: var(--bg); flex-shrink: 0; }
+.logo-fixa { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; }
+.info-header h2 { font-size: 16px; font-weight: 700; }
+.status-online { color: var(--accent); font-size: 11px; font-weight: bold; }
 
-.logo-fixa { 
-    width: 42px; 
-    height: 42px; 
-    border-radius: 50%; 
-    border: 2px solid var(--accent); 
-    object-fit: cover;
-}
-
-.info-escola h2 { font-size: 16px; font-weight: 700; }
-.info-escola small { color: var(--accent); font-weight: 600; font-size: 11px; }
-
-/* FEED E INPUTS */
-.main-content { flex: 1; position: relative; overflow: hidden; }
-.aba { display: none; height: 100%; flex-direction: column; }
+/* Conteúdo */
+.main-content { flex: 1; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+.aba { display: none; height: 100%; flex-direction: column; overflow: hidden; }
 .aba.active { display: flex; }
 
-.feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; padding-bottom: 80px; }
+/* Feeds */
+.feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; padding-bottom: 90px; }
+.msg-post { max-width: 85%; display: flex; flex-direction: column; margin-bottom: 5px; }
+.me { align-self: flex-end; } .me .bubble { background: var(--msg-me); color: white; border-radius: 18px 18px 4px 18px; }
+.outro { align-self: flex-start; } .outro .bubble { background: var(--msg-outro); color: var(--text); border-radius: 18px 18px 18px 4px; border: 1px solid var(--border); }
+.bubble { padding: 10px 15px; font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-.footer-input { position: absolute; bottom: 0; width: 100%; padding: 10px 15px; background: var(--bg); border-top: 1px solid var(--border); }
+/* Input Rodapé */
+.footer-input { position: absolute; bottom: 0; width: 100%; padding: 12px; background: var(--bg); border-top: 1px solid var(--border); }
 .input-wrapper { background: var(--msg-outro); border-radius: 25px; display: flex; padding: 2px 15px; border: 1px solid var(--border); align-items: center; }
 input { flex: 1; border: none; background: transparent; color: var(--text); padding: 10px; outline: none; font-size: 16px; }
-.send-btn { color: var(--primary); font-weight: 800; background: none; border: none; cursor: pointer; }
+.send-btn { color: var(--primary); font-weight: 800; background: none; border: none; cursor: pointer; padding: 10px; }
 
-/* HUMOR GRID */
-.emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 15px; overflow-y: auto; }
-.emoji-item { background: var(--msg-outro); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid var(--border); }
-.emoji-item span { font-size: 40px; display: block; }
-.emoji-item p { font-weight: 700; margin-top: 8px; font-size: 14px; }
+/* Emojis Grandes */
+.emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 20px; overflow-y: auto; }
+.emoji-item { background: var(--msg-outro); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid var(--border); transition: 0.2s; }
+.emoji-item:active { transform: scale(0.9); }
+.emoji-item span { font-size: 45px; display: block; }
+.emoji-item p { font-weight: 700; margin-top: 10px; }
 
-/* TOAST (Confirmação) */
-#toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 10px 25px; border-radius: 30px; font-weight: bold; display: none; z-index: 3000; }
+/* Toast Confirmação */
+#toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 12px 30px; border-radius: 30px; font-weight: bold; display: none; z-index: 3000; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; bottom: 80px; } to { opacity: 1; bottom: 100px; } }
 
-.fab-theme { position: fixed; bottom: 85px; right: 20px; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: white; border: none; font-size: 20px; z-index: 1000; }
+.fab-theme { position: fixed; bottom: 85px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background: var(--accent); color: white; border: none; font-size: 22px; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.p-20 { padding: 20px; }
+.btn-acao { width: 100%; background: var(--primary); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 10px; }
+textarea { width: 100%; height: 150px; border-radius: 12px; padding: 15px; border: 1px solid var(--border); background: var(--msg-outro); color: var(--text); outline: none; }
