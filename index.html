@@ -21,9 +21,9 @@
         <section id="forum" class="aba active">
             <div class="header-escola">
                 <img src="logo.png" class="logo-fixa" alt="Logo">
-                <div>
+                <div class="info-escola">
                     <h2>Direct CETI JM</h2>
-                    <small style="color: #2e7d32;">● Online agora</small>
+                    <small>● Ativo agora</small>
                 </div>
             </div>
             <div id="feed-forum" class="feed"></div>
@@ -36,43 +36,21 @@
         </section>
 
         <section id="sentimentos" class="aba">
-            <div class="header-escola"><h2>Como você se sente hoje?</h2></div>
+            <div class="header-escola">
+                <img src="logo.png" class="logo-fixa" alt="Logo">
+                <div class="info-escola"><h2>Como você está?</h2></div>
+            </div>
             <div class="emoji-grid">
-                <div class="emoji-item" onclick="votarHumor('Ansioso')"><span>😰</span><p>Ansioso</p><small>Coração acelerado</small></div>
-                <div class="emoji-item" onclick="votarHumor('Feliz')"><span>😊</span><p>Feliz</p><small>Dia produtivo</small></div>
+                <div class="emoji-item" onclick="votarHumor('Ansioso')"><span>😰</span><p>Ansioso</p><small>Inquieto</small></div>
+                <div class="emoji-item" onclick="votarHumor('Feliz')"><span>😊</span><p>Feliz</p><small>Dia ótimo</small></div>
                 <div class="emoji-item" onclick="votarHumor('Triste')"><span>😢</span><p>Triste</p><small>Preciso de apoio</small></div>
-                <div class="emoji-item" onclick="votarHumor('Estudioso')"><span>🤯</span><p>Focado</p><small>Muitas matérias</small></div>
-                <div class="emoji-item" onclick="votarHumor('Irritado')"><span>😡</span><p>Irritado</p><small>Momento difícil</small></div>
-                <div class="emoji-item" onclick="votarHumor('Cansado')"><span>😴</span><p>Exausto</p><small>Muita pressão</small></div>
+                <div class="emoji-item" onclick="votarHumor('Focado')"><span>🤯</span><p>Focado</p><small>Estudando</small></div>
+                <div class="emoji-item" onclick="votarHumor('Irritado')"><span>😡</span><p>Irritado</p><small>Estressado</small></div>
+                <div class="emoji-item" onclick="votarHumor('Cansado')"><span>😴</span><p>Exausto</p><small>Sem energia</small></div>
             </div>
         </section>
 
-        <section id="avisos" class="aba">
-            <div id="feed-avisos" class="feed"></div>
-            <div class="footer-input">
-                <div class="input-wrapper">
-                    <input type="text" id="input-aviso" placeholder="Postar alerta (Chave necessária)">
-                    <button class="send-btn" onclick="salvarAviso()">Postar</button>
-                </div>
-            </div>
-        </section>
-
-        <section id="cronograma" class="aba">
-            <div class="header-escola"><h2>📅 Agenda Escolar</h2></div>
-            <div id="feed-cronograma" class="feed"></div>
-        </section>
-
-        <section id="contatos" class="aba">
-            <div class="contato-card" onclick="window.open('https://wa.me/5589981259467')">
-                <strong>WhatsApp Ouvidoria</strong>
-                <p>(89) 98125-9467</p>
-            </div>
-            <div class="contato-card">
-                <strong>Instagram Oficial</strong>
-                <p>@m.eduarda.brito25</p>
-            </div>
-        </section>
-    </main>
+        </main>
 
     <div id="toast">Enviado com sucesso! ✓</div>
     <button class="fab-theme" onclick="toggleTheme()">🌓</button>
