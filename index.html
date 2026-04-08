@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal CETI JM</title>
+    <title>Portal Elite - CETI JM</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="light-mode">
@@ -24,12 +24,13 @@
             <img src="logo.png" class="logo-fixa" onerror="this.src='https://via.placeholder.com/50?text=JM'">
             <div class="info-header">
                 <h2>CETI José Marques</h2>
-                <span class="status-online">● Sistema Ativo</span>
+                <span class="status-online">● Sistema Elite Ativo</span>
             </div>
         </header>
 
         <section id="forum" class="aba active">
             <div id="feed-forum" class="feed"></div>
+            <div id="reply-preview" class="reply-bar"></div>
             <div class="footer-input">
                 <div class="input-wrapper">
                     <input type="text" id="input-msg" placeholder="Enviar direct...">
@@ -52,7 +53,7 @@
             <div id="feed-avisos" class="feed"></div>
             <div class="footer-input">
                 <div class="input-wrapper">
-                    <input type="text" id="input-aviso" placeholder="Senha Chernobyl para Alerta...">
+                    <input type="text" id="input-aviso" placeholder="Senha Chernobyl...">
                     <button class="send-btn" onclick="salvarAviso()">Postar</button>
                 </div>
             </div>
@@ -71,16 +72,19 @@
             <div id="feed-agenda" class="feed"></div>
             <div class="footer-input">
                 <div class="input-wrapper">
-                    <input type="text" id="input-agenda" placeholder="Senha Chernobyl para Agenda...">
+                    <input type="text" id="input-agenda" placeholder="Senha Chernobyl...">
                     <button class="send-btn" onclick="salvarAgenda()">Add</button>
                 </div>
             </div>
         </section>
 
         <section id="feedback" class="aba">
-            <div class="p-20">
-                <textarea id="texto-feedback" placeholder="Escreva sua crítica ou elogio..."></textarea>
-                <button class="btn-acao" onclick="enviarFeedback()">Enviar Opinião</button>
+            <div class="feed"><textarea id="texto-feedback" placeholder="Escreva aqui..."></textarea></div>
+            <div class="footer-input">
+                <div class="input-wrapper">
+                    <input type="text" placeholder="Escreva no campo acima" disabled>
+                    <button class="send-btn" onclick="enviarFeedback()">Enviar</button>
+                </div>
             </div>
         </section>
 
