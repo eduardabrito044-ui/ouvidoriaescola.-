@@ -2,11 +2,83 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Portal Elite - CETI JM</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Direct Elite - CETI JM</title>
+    
+    <style>
+        :root {
+            --bg: #ffffff; --text: #051d3b; --primary: #18447e; 
+            --accent: #2e7d32; --msg-me: #3797f0; --msg-outro: #f2f3f5; --border: #dbdbdb;
+            --gold: #ffd700; --insta-blue: #0095f6;
+        }
+
+        body.dark-mode {
+            --bg: #051d3b; --text: #ffffff; --msg-me: #0095f6; --msg-outro: #262626; --border: #363636;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        
+        body { 
+            background: var(--bg); color: var(--text); height: 100vh; 
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* HEADER INSTAGRAM */
+        .top-menu { background: var(--primary); padding: 10px 0; border-bottom: 1px solid var(--border); z-index: 1000; }
+        .menu-scroll { display: flex; overflow-x: auto; gap: 8px; padding: 0 15px; scrollbar-width: none; }
+        .menu-scroll::-webkit-scrollbar { display: none; }
+        .menu-scroll button { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 16px; border-radius: 20px; white-space: nowrap; font-weight: 600; font-size: 13px; cursor: pointer; }
+        .menu-scroll button.active-btn { background: white; color: var(--primary); }
+
+        .header-elite { 
+            display: flex; align-items: center; padding: 10px 15px; 
+            background: linear-gradient(90deg, #18447e 0%, #2e7d32 100%); color: white; gap: 12px;
+        }
+        .logo-fixa { width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; object-fit: cover; }
+
+        /* MENSAGENS */
+        .main-content { flex: 1; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        .aba { display: none; height: 100%; flex-direction: column; }
+        .aba.active { display: flex; }
+        .feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 120px; }
+
+        .msg-container { display: flex; flex-direction: column; max-width: 80%; margin-bottom: 5px; }
+        .me { align-self: flex-end; align-items: flex-end; }
+        .outro { align-self: flex-start; align-items: flex-start; }
+
+        .user-name { font-size: 11px; font-weight: 700; margin-bottom: 2px; color: var(--primary); }
+        .bubble { padding: 10px 15px; border-radius: 20px; font-size: 14px; position: relative; border: 1px solid transparent; }
+        .me .bubble { background: var(--msg-me); color: white; border-bottom-right-radius: 4px; }
+        .outro .bubble { background: var(--msg-outro); color: var(--text); border-bottom-left-radius: 4px; border: 1px solid var(--border); }
+
+        .msg-time { font-size: 9px; opacity: 0.5; margin-top: 2px; }
+
+        /* RANKING APENAS NO MURAL */
+        #mural .ranking-ouro .bubble { border: 2px solid var(--gold) !important; box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+
+        /* BARRA INSTAGRAM DIRECT FIXA */
+        .footer-input { 
+            position: fixed; bottom: 0; width: 100%; background: var(--bg); 
+            padding: 10px 12px calc(15px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); z-index: 9999;
+        }
+        .insta-bar { display: flex; align-items: center; gap: 10px; max-width: 800px; margin: 0 auto; }
+        .cam-btn { background: var(--insta-blue); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .input-box { flex: 1; border: 1px solid var(--border); border-radius: 25px; display: flex; align-items: center; padding: 0 15px; background: transparent; min-height: 40px; }
+        .input-box input { flex: 1; border: none; background: transparent; outline: none; padding: 10px 0; color: var(--text); font-size: 15px; }
+        .send-btn { background: none; border: none; color: var(--insta-blue); font-weight: 700; cursor: pointer; padding: 5px; font-size: 15px; }
+
+        .reply-preview { background: var(--msg-outro); padding: 5px 15px; border-left: 3px solid var(--primary); font-size: 12px; display: none; }
+
+        /* HUMOR CARDS */
+        .emoji-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
+        .emoji-card { background: var(--msg-outro); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid var(--border); }
+        
+        .fab-theme { position: fixed; bottom: 100px; right: 20px; width: 45px; height: 45px; border-radius: 50%; background: var(--primary); color: white; border: none; z-index: 1000; }
+        textarea { width: 100%; height: 150px; border-radius: 15px; padding: 12px; border: 1px solid var(--border); background: var(--msg-outro); color: var(--text); outline: none; }
+    </style>
 </head>
 <body class="light-mode">
+
     <nav class="top-menu">
         <div class="menu-scroll">
             <button id="btn-forum" class="active-btn" onclick="mudarAba('forum')">💬 Chat</button>
@@ -15,90 +87,159 @@
             <button id="btn-sentimentos" onclick="mudarAba('sentimentos')">🎭 Humor</button>
             <button id="btn-agenda" onclick="mudarAba('agenda')">📅 Cronograma</button>
             <button id="btn-feedback" onclick="mudarAba('feedback')">🏫 Opinião</button>
-            <button id="btn-contatos" onclick="mudarAba('contatos')">📞 Contatos</button>
         </div>
     </nav>
 
-    <main class="main-content">
-        <header class="header-escola-fixo">
-            <img src="logo.png" class="logo-fixa" onerror="this.src='https://via.placeholder.com/50?text=JM'">
-            <div class="info-header">
-                <h2>CETI José Marques</h2>
-                <span class="status-online">● Sistema Elite Ativo</span>
-            </div>
-        </header>
+    <header class="header-elite">
+        <img src="logo.png" class="logo-fixa" onerror="this.src='https://via.placeholder.com/40'">
+        <h2 style="font-size: 18px;">CETI José Marques</h2>
+    </header>
 
+    <main class="main-content">
         <section id="forum" class="aba active">
             <div id="feed-forum" class="feed"></div>
-            <div id="reply-preview" class="reply-bar"></div>
-            <div class="footer-input">
-                <div class="input-wrapper">
-                    <input type="text" id="input-msg" placeholder="Enviar direct...">
-                    <button class="send-btn" onclick="salvarMensagem()">Enviar</button>
-                </div>
-            </div>
         </section>
 
         <section id="mural" class="aba">
             <div id="feed-mural" class="feed"></div>
-            <div class="footer-input">
-                <div class="input-wrapper">
-                    <input type="text" id="input-mural" placeholder="Sugerir ideia...">
-                    <button class="send-btn" onclick="salvarMural()">Postar</button>
-                </div>
-            </div>
         </section>
 
         <section id="avisos" class="aba">
             <div id="feed-avisos" class="feed"></div>
-            <div class="footer-input">
-                <div class="input-wrapper">
-                    <input type="text" id="input-aviso" placeholder="Senha Chernobyl...">
-                    <button class="send-btn" onclick="salvarAviso()">Postar</button>
-                </div>
-            </div>
         </section>
 
         <section id="sentimentos" class="aba">
             <div class="emoji-grid">
-                <div class="emoji-item" onclick="votarHumor('Ansioso')"><span>😰</span><p>Ansioso</p></div>
-                <div class="emoji-item" onclick="votarHumor('Feliz')"><span>😊</span><p>Feliz</p></div>
-                <div class="emoji-item" onclick="votarHumor('Triste')"><span>😢</span><p>Triste</p></div>
-                <div class="emoji-item" onclick="votarHumor('Focado')"><span>🤯</span><p>Focado</p></div>
+                <div class="emoji-card" onclick="votarHumor('Ansioso')"><span>😰</span><p>Ansioso</p></div>
+                <div class="emoji-card" onclick="votarHumor('Feliz')"><span>😊</span><p>Feliz</p></div>
+                <div class="emoji-card" onclick="votarHumor('Triste')"><span>😢</span><p>Triste</p></div>
+                <div class="emoji-card" onclick="votarHumor('Focado')"><span>🤯</span><p>Focado</p></div>
             </div>
         </section>
 
         <section id="agenda" class="aba">
             <div id="feed-agenda" class="feed"></div>
-            <div class="footer-input">
-                <div class="input-wrapper">
-                    <input type="text" id="input-agenda" placeholder="Senha Chernobyl...">
-                    <button class="send-btn" onclick="salvarAgenda()">Add</button>
-                </div>
-            </div>
         </section>
 
         <section id="feedback" class="aba">
-            <div class="feed"><textarea id="texto-feedback" placeholder="Escreva aqui..."></textarea></div>
-            <div class="footer-input">
-                <div class="input-wrapper">
-                    <input type="text" placeholder="Escreva no campo acima" disabled>
-                    <button class="send-btn" onclick="enviarFeedback()">Enviar</button>
-                </div>
+            <div class="feed">
+                <textarea id="texto-feedback" placeholder="Sua opinião é importante..."></textarea>
             </div>
         </section>
 
-        <section id="contatos" class="aba">
-            <div class="p-20">
-                <div class="card-contato" onclick="window.open('https://wa.me/5589981259467')">
-                    <strong>WhatsApp Ouvidoria</strong><p>(89) 98125-9467</p>
+        <div class="footer-input">
+            <div id="reply-box" class="reply-preview"></div>
+            <div class="insta-bar">
+                <div class="cam-btn">📷</div>
+                <div class="input-box">
+                    <input type="text" id="master-input" placeholder="Escreva aqui...">
                 </div>
+                <button class="send-btn" onclick="executarAcao()">Enviar</button>
             </div>
-        </section>
+        </div>
     </main>
 
-    <div id="toast">Sucesso! ✓</div>
     <button class="fab-theme" onclick="toggleTheme()">🌓</button>
-    <script type="module" src="script.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdlHar22iODe81f-nrUi06PLWKQReb9Gc",
+            authDomain: "siteescolaeduarda.firebaseapp.com",
+            databaseURL: "https://siteescolaeduarda-default-rtdb.firebaseio.com",
+            projectId: "siteescolaeduarda"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let nome = localStorage.getItem("nome") || prompt("Qual seu nome?") || "Aluno";
+        localStorage.setItem("nome", nome);
+        
+        let abaAtual = 'forum';
+        let respondendo = null;
+
+        window.mudarAba = (id) => {
+            abaAtual = id;
+            document.querySelectorAll('.aba').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.menu-scroll button').forEach(b => b.classList.remove('active-btn'));
+            document.getElementById(id).classList.add('active');
+            document.getElementById('btn-'+id).classList.add('active-btn');
+            document.getElementById('master-input').placeholder = "Escreva em " + id + "...";
+        };
+
+        window.toggleTheme = () => document.body.classList.toggle('dark-mode');
+
+        window.executarAcao = () => {
+            const input = document.getElementById('master-input');
+            const txt = input.value.trim();
+            if (!txt) return;
+
+            if (abaAtual === 'forum') {
+                push(ref(db, "mensagens"), { nome, texto: txt, resposta: respondendo, timestamp: serverTimestamp() });
+            } else if (abaAtual === 'mural') {
+                push(ref(db, "ideias"), { nome, texto: txt, votos: 0 });
+            } else if (abaAtual === 'avisos' || abaAtual === 'agenda') {
+                if (prompt("Chave Chernobyl:") === "Chernobyl") {
+                    push(ref(db, abaAtual), { texto: txt, nome });
+                }
+            } else if (abaAtual === 'feedback') {
+                const area = document.getElementById('texto-feedback');
+                push(ref(db, "feedback"), { nome, texto: area.value || txt });
+                area.value = "";
+            }
+
+            input.value = "";
+            respondendo = null;
+            document.getElementById('reply-box').style.display = 'none';
+        };
+
+        // CARREGAR CHAT
+        onValue(ref(db, "mensagens"), snap => {
+            const feed = document.getElementById("feed-forum");
+            feed.innerHTML = "";
+            snap.forEach(c => {
+                const d = c.val();
+                const hora = d.timestamp ? new Date(d.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+                const div = document.createElement("div");
+                div.className = `msg-container ${d.nome === nome ? 'me' : 'outro'}`;
+                div.innerHTML = `
+                    <span class="user-name">${d.nome}</span>
+                    <div class="bubble" onclick="prepararReply('${d.texto}', '${d.nome}')">
+                        ${d.resposta ? `<div style="font-size:10px; opacity:0.5">⤴️ ${d.resposta}</div>` : ''}
+                        ${d.texto}
+                    </div>
+                    <span class="msg-time">${hora}</span>
+                `;
+                feed.appendChild(div);
+            });
+            feed.scrollTop = feed.scrollHeight;
+        });
+
+        // CARREGAR MURAL COM RANKING
+        onValue(ref(db, "ideias"), snap => {
+            const feed = document.getElementById("feed-mural");
+            feed.innerHTML = "";
+            let counts = {};
+            snap.forEach(c => { counts[c.val().nome] = (counts[c.val().nome] || 0) + 1; });
+            const top = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b, "");
+
+            snap.forEach(c => {
+                const d = c.val();
+                const div = document.createElement("div");
+                div.className = `msg-container outro ${d.nome === top ? 'ranking-ouro' : ''}`;
+                div.innerHTML = `<span class="user-name">${d.nome === top ? '👑 ' : ''}${d.nome}</span><div class="bubble">${d.texto}</div>`;
+                feed.appendChild(div);
+            });
+        });
+
+        window.prepararReply = (msg, autor) => {
+            respondendo = msg;
+            const rb = document.getElementById('reply-box');
+            rb.style.display = 'block';
+            rb.innerHTML = `Respondendo a ${autor}: ${msg.substring(0,15)}... <span onclick="window.respondendo=null; this.parentElement.style.display='none'">✖</span>`;
+        };
+    </script>
 </body>
 </html>
