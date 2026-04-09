@@ -40,23 +40,30 @@
         .aba.active { display: flex; }
         .feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 110px; }
 
-        .msg-container { display: flex; flex-direction: column; max-width: 85%; margin-bottom: 5px; }
+        .msg-container { display: flex; flex-direction: column; max-width: 85%; margin-bottom: 5px; position: relative; }
         .me { align-self: flex-end; align-items: flex-end; }
         .outro { align-self: flex-start; align-items: flex-start; }
         
-        .user-name { font-size: 11px; font-weight: 700; margin-bottom: 2px; color: var(--insta-blue); }
-        .bubble { padding: 12px 16px; border-radius: 20px; font-size: 14px; position: relative; border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .user-name { font-size: 11px; font-weight: 700; margin-bottom: 2px; color: var(--insta-blue); display: block; }
+        
+        .bubble { padding: 10px 14px; border-radius: 18px; font-size: 14px; position: relative; border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1); min-width: 60px; }
         
         .me .bubble { background: var(--msg-me); color: white; border-bottom-right-radius: 4px; border-color: rgba(255,255,255,0.1); }
         .outro .bubble { background: var(--msg-outro); color: var(--text); border-bottom-left-radius: 4px; border: 2px solid var(--border); }
 
-        /* ESTILO COORDENAÇÃO (VIVO/NEON NO ESCURO) */
-        .coord-msg .bubble { 
-            background: var(--coord) !important; 
-            border: 2px solid var(--coord-border) !important; 
-            color: var(--text) !important;
-            font-weight: 500;
-        }
+        /* HORA NO CANTO */
+        .msg-time { font-size: 9px; opacity: 0.6; align-self: flex-end; margin-top: 2px; }
+        .me .msg-time { color: #eee; }
+
+        /* ESTILO RESPOSTA DENTRO DA BOLHA */
+        .reply-content { background: rgba(0,0,0,0.05); padding: 5px 8px; border-left: 3px solid var(--insta-blue); border-radius: 4px; font-size: 11px; margin-bottom: 5px; opacity: 0.8; }
+        .dark-mode .reply-content { background: rgba(255,255,255,0.1); }
+
+        /* PREVIA DE RESPOSTA EM CIMA DA BARRA */
+        .reply-preview { background: var(--msg-outro); padding: 8px 15px; border-top: 1px solid var(--border); display: none; align-items: center; justify-content: space-between; font-size: 12px; }
+
+        /* ESTILO COORDENAÇÃO */
+        .coord-msg .bubble { background: var(--coord) !important; border: 2px solid var(--coord-border) !important; color: var(--text) !important; font-weight: 500; }
 
         /* RANKING MURAL */
         .ranking-top { order: -1; }
@@ -64,36 +71,14 @@
         .vote-btn { background: rgba(237, 73, 86, 0.1); border: 1px solid #ed4956; border-radius: 10px; color: #ed4956; padding: 4px 10px; font-size: 12px; margin-top: 5px; cursor: pointer; font-weight: bold; }
 
         /* BARRA INSTAGRAM FIXA */
-        .footer-input { 
-            position: fixed; bottom: 0; width: 100%; background: var(--bg); 
-            padding: 10px 12px calc(20px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); z-index: 9999;
-        }
+        .footer-input { position: fixed; bottom: 0; width: 100%; background: var(--bg); padding: 5px 12px calc(20px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); z-index: 9999; }
         .insta-bar { display: flex; align-items: center; gap: 10px; max-width: 600px; margin: 0 auto; }
         .cam-btn { background: var(--insta-blue); color: white; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
         .input-box { flex: 1; border: 1px solid var(--border); border-radius: 25px; display: flex; align-items: center; padding: 0 15px; background: transparent; }
         .input-box input { flex: 1; border: none; background: transparent; outline: none; padding: 12px 0; color: var(--text); font-size: 15px; }
         .send-btn { background: none; border: none; color: var(--insta-blue); font-weight: 700; cursor: pointer; padding: 5px; font-size: 16px; }
 
-        /* BOTÃO MODO ESCURO (LADO ESQUERDO) */
-        .fab-theme { 
-            position: fixed; 
-            bottom: 100px; 
-            left: 20px; /* Mudado para a esquerda */
-            width: 48px; 
-            height: 48px; 
-            border-radius: 50%; 
-            background: var(--accent); 
-            color: white; 
-            border: none; 
-            z-index: 1000; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            cursor: pointer;
-            font-size: 20px;
-        }
-        
-        /* HUMOR CARDS */
-        .emoji-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
-        .emoji-card { background: var(--msg-outro); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid var(--border); cursor: pointer; }
+        .fab-theme { position: fixed; bottom: 120px; left: 20px; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: white; border: none; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; font-size: 20px; }
     </style>
 </head>
 <body class="light-mode">
@@ -118,20 +103,15 @@
         <section id="forum" class="aba active"><div id="feed-forum" class="feed"></div></section>
         <section id="mural" class="aba"><div id="feed-mural" class="feed"></div></section>
         <section id="avisos" class="aba"><div id="feed-avisos" class="feed"></div></section>
-        
-        <section id="sentimentos" class="aba">
-            <div class="emoji-grid">
-                <div class="emoji-card" onclick="alert('Humor registrado!')"><span>😰</span><br><strong>Ansioso</strong></div>
-                <div class="emoji-card" onclick="alert('Humor registrado!')"><span>😊</span><br><strong>Feliz</strong></div>
-                <div class="emoji-card" onclick="alert('Humor registrado!')"><span>😢</span><br><strong>Triste</strong></div>
-                <div class="emoji-card" onclick="alert('Humor registrado!')"><span>😴</span><br><strong>Cansado</strong></div>
-            </div>
-        </section>
-
+        <section id="sentimentos" class="aba"><div id="feed-humor" class="feed"></div></section>
         <section id="agenda" class="aba"><div id="feed-agenda" class="feed"></div></section>
         <section id="feedback" class="aba"><div class="feed"><textarea id="texto-feedback" style="width:100%; height:150px; border-radius:15px; padding:15px; border:1px solid var(--border); outline:none; background:var(--msg-outro); color:var(--text);" placeholder="Sua opinião..."></textarea></div></section>
 
         <div class="footer-input">
+            <div id="reply-preview" class="reply-preview">
+                <span id="reply-text">Respondendo...</span>
+                <span onclick="cancelarResposta()" style="cursor:pointer; font-weight:bold;">✕</span>
+            </div>
             <div class="insta-bar">
                 <div class="cam-btn">📷</div>
                 <div class="input-box">
@@ -161,6 +141,7 @@
         localStorage.setItem("nome", nome);
         
         let abaAtual = 'forum';
+        let dadosResposta = null;
 
         window.mudarAba = (id) => {
             abaAtual = id;
@@ -172,53 +153,79 @@
 
         window.toggleTheme = () => document.body.classList.toggle('dark-mode');
 
+        // FUNCAO PARA RESPONDER
+        window.prepararResposta = (msg, autor) => {
+            dadosResposta = { msg, autor };
+            document.getElementById('reply-text').innerText = `Respondendo a ${autor}...`;
+            document.getElementById('reply-preview').style.display = 'flex';
+            document.getElementById('master-input').focus();
+        };
+
+        window.cancelarResposta = () => {
+            dadosResposta = null;
+            document.getElementById('reply-preview').style.display = 'none';
+        };
+
         window.executarAcao = () => {
             const input = document.getElementById('master-input');
             const txt = input.value.trim();
             if (!txt) return;
 
-            if (abaAtual === 'avisos' || abaAtual === 'agenda') {
-                const p = prompt("Chave Chernobyl:");
-                if(p === "Chernobyl") {
-                    push(ref(db, abaAtual), { texto: txt, nome: "COORDENAÇÃO", timestamp: serverTimestamp() });
-                } else { alert("Acesso Negado!"); }
+            const dadosMsg = {
+                nome,
+                texto: txt,
+                timestamp: serverTimestamp(),
+                resposta: dadosResposta ? dadosResposta : null
+            };
+
+            if (abaAtual === 'forum') {
+                push(ref(db, "mensagens"), dadosMsg);
             } else if (abaAtual === 'mural') {
-                push(ref(db, "ideias"), { nome, texto: txt, votos: 0, timestamp: serverTimestamp() });
-            } else if (abaAtual === 'forum') {
-                push(ref(db, "mensagens"), { nome, texto: txt, timestamp: serverTimestamp() });
-            } else if (abaAtual === 'feedback') {
-                push(ref(db, "feedback"), { nome, texto: txt });
+                push(ref(db, "ideias"), { ...dadosMsg, votos: 0 });
+            } else if (abaAtual === 'avisos' || abaAtual === 'agenda') {
+                const p = prompt("Chave Chernobyl:");
+                if(p === "Chernobyl") push(ref(db, abaAtual), { texto: txt, nome: "COORDENAÇÃO", timestamp: serverTimestamp() });
             }
+            
             input.value = "";
+            cancelarResposta();
         };
 
+        // DESENHAR MENSAGENS COM NOME, HORA E RESPONDER
         onValue(ref(db, "mensagens"), snap => {
             const feed = document.getElementById("feed-forum"); feed.innerHTML = "";
             snap.forEach(c => {
                 const d = c.val();
+                const data = d.timestamp ? new Date(d.timestamp) : new Date();
+                const hora = data.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
                 const div = document.createElement("div");
                 div.className = `msg-container ${d.nome === nome ? 'me' : 'outro'}`;
-                div.innerHTML = `<span class="user-name">${d.nome}</span><div class="bubble">${d.texto}</div>`;
+                div.onclick = () => prepararResposta(d.texto, d.nome); // Clicar na msg para responder
+
+                div.innerHTML = `
+                    <span class="user-name">${d.nome}</span>
+                    <div class="bubble">
+                        ${d.resposta ? `<div class="reply-content"><b>${d.resposta.autor}</b><br>${d.resposta.msg}</div>` : ''}
+                        ${d.texto}
+                        <div class="msg-time">${hora}</div>
+                    </div>
+                `;
                 feed.appendChild(div);
             });
             feed.scrollTop = feed.scrollHeight;
         });
 
+        // MURAL E COORDENAÇÃO (Simplificado)
         onValue(ref(db, "ideias"), snap => {
             const feed = document.getElementById("feed-mural"); feed.innerHTML = "";
             let ideias = [];
             snap.forEach(c => { ideias.push({key: c.key, ...c.val()}); });
             ideias.sort((a, b) => b.votos - a.votos);
-
-            ideias.forEach((d, index) => {
-                const isTop = index === 0 && d.votos > 0;
+            ideias.forEach((d, i) => {
                 const div = document.createElement("div");
-                div.className = `msg-container outro ${isTop ? 'ranking-top' : ''}`;
-                div.innerHTML = `
-                    <span class="user-name">${isTop ? '👑 ' : ''}${d.nome}</span>
-                    <div class="bubble">${d.texto}</div>
-                    <button class="vote-btn" onclick="votar('${d.key}')">❤️ ${d.votos || 0} votos</button>
-                `;
+                div.className = `msg-container outro ${i === 0 && d.votos > 0 ? 'ranking-top' : ''}`;
+                div.innerHTML = `<span class="user-name">${i === 0 && d.votos > 0 ? '👑 ' : ''}${d.nome}</span><div class="bubble">${d.texto}</div><button class="vote-btn" onclick="votar('${d.key}')">❤️ ${d.votos || 0}</button>`;
                 feed.appendChild(div);
             });
         });
