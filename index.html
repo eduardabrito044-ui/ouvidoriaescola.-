@@ -18,20 +18,15 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
-        
         body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; transition: 0.3s; }
 
-        /* MENU DE 7 ABAS */
+        /* MENU */
         .top-menu { background: var(--primary); padding: 10px 0; border-bottom: 1px solid var(--border); z-index: 1000; }
         .menu-scroll { display: flex; overflow-x: auto; gap: 8px; padding: 0 15px; scrollbar-width: none; }
-        .menu-scroll::-webkit-scrollbar { display: none; }
         .menu-scroll button { background: rgba(255,255,255,0.1); border: none; color: white; padding: 8px 16px; border-radius: 20px; white-space: nowrap; font-weight: 600; font-size: 13px; cursor: pointer; }
         .menu-scroll button.active-btn { background: white; color: var(--primary); }
 
-        .header-elite { 
-            display: flex; align-items: center; padding: 10px 15px; 
-            background: linear-gradient(90deg, #18447e 0%, #2e7d32 100%); color: white; gap: 12px;
-        }
+        .header-elite { display: flex; align-items: center; padding: 10px 15px; background: linear-gradient(90deg, #18447e 0%, #2e7d32 100%); color: white; gap: 12px; }
         .logo-fixa { width: 42px; height: 42px; border-radius: 50%; border: 2px solid white; }
 
         /* CONTEÚDO */
@@ -40,37 +35,36 @@
         .aba.active { display: flex; }
         .feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 110px; }
 
-        /* BALÕES DE MENSAGEM */
+        /* BALÕES */
         .msg-container { display: flex; flex-direction: column; max-width: 85%; margin-bottom: 5px; position: relative; }
         .me { align-self: flex-end; align-items: flex-end; }
         .outro { align-self: flex-start; align-items: flex-start; }
-        .user-name { font-size: 11px; font-weight: 700; margin-bottom: 2px; color: var(--insta-blue); display: block; }
-        .bubble { padding: 10px 14px; border-radius: 18px; font-size: 14px; position: relative; border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1); min-width: 80px; }
+        .user-name { font-size: 11px; font-weight: 700; margin-bottom: 2px; color: var(--insta-blue); }
+        .bubble { padding: 10px 14px; border-radius: 18px; font-size: 14px; position: relative; border: 2px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .me .bubble { background: var(--msg-me); color: white; border-bottom-right-radius: 4px; }
         .outro .bubble { background: var(--msg-outro); color: var(--text); border-bottom-left-radius: 4px; border: 2px solid var(--border); }
-        .msg-time { font-size: 9px; opacity: 0.6; align-self: flex-end; margin-top: 4px; display: block; text-align: right; }
+        .msg-time { font-size: 9px; opacity: 0.6; align-self: flex-end; margin-top: 4px; display: block; }
+        .coord-msg .bubble { background: var(--coord) !important; border: 2px solid var(--coord-border) !important; color: #000 !important; }
 
-        /* RESPOSTA */
-        .reply-content { background: rgba(0,0,0,0.05); padding: 5px 8px; border-left: 3px solid var(--insta-blue); border-radius: 4px; font-size: 11px; margin-bottom: 5px; }
-        .reply-preview { background: var(--msg-outro); padding: 8px 15px; border-top: 1px solid var(--border); display: none; align-items: center; justify-content: space-between; font-size: 12px; }
+        /* HUMOR */
+        .emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
+        .emoji-card { background: var(--msg-outro); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
+        .emoji-card:active { transform: scale(0.9); }
+        .emoji-card span { font-size: 40px; display: block; margin-bottom: 10px; }
 
-        /* COORDENAÇÃO */
-        .coord-msg .bubble { background: var(--coord) !important; border: 2px solid var(--coord-border) !important; font-weight: 500; }
+        /* CONTATOS */
+        .contato-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-bottom: 1px solid var(--border); }
+        .contato-icon { width: 45px; height: 45px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
-        /* MODAL CHAVE */
+        /* MODAL E FOOTER */
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 10000; }
         .modal-content { background: var(--bg); padding: 25px; border-radius: 20px; width: 85%; max-width: 320px; text-align: center; }
-        .modal-content input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); margin: 15px 0; text-align: center; }
-
-        /* BARRA DE ENTRADA */
         .footer-input { position: fixed; bottom: 0; width: 100%; background: var(--bg); padding: 5px 12px calc(20px + env(safe-area-inset-bottom)); border-top: 1px solid var(--border); z-index: 9999; }
         .insta-bar { display: flex; align-items: center; gap: 10px; max-width: 600px; margin: 0 auto; }
-        .cam-btn { background: var(--insta-blue); color: white; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
         .input-box { flex: 1; border: 1px solid var(--border); border-radius: 25px; display: flex; align-items: center; padding: 0 15px; }
         .input-box input { flex: 1; border: none; background: transparent; outline: none; padding: 12px 0; color: var(--text); }
         .send-btn { background: none; border: none; color: var(--insta-blue); font-weight: 700; cursor: pointer; }
-
-        .fab-theme { position: fixed; bottom: 120px; left: 20px; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: white; border: none; z-index: 1000; font-size: 20px; }
+        .fab-theme { position: fixed; bottom: 120px; left: 20px; width: 48px; height: 48px; border-radius: 50%; background: var(--accent); color: white; border: none; z-index: 1000; }
     </style>
 </head>
 <body class="light-mode">
@@ -78,10 +72,10 @@
     <div id="modalChave" class="modal-overlay">
         <div class="modal-content">
             <h3>Chave de Acesso</h3>
-            <input type="password" id="inputChave" placeholder="Digite a chave...">
+            <input type="password" id="inputChave" placeholder="Digite a chave..." style="width:100%; padding:12px; margin:15px 0; border-radius:10px; border:1px solid var(--border); text-align:center;">
             <div style="display:flex; gap:10px;">
                 <button onclick="fecharModal()" style="flex:1; padding:10px; border-radius:10px; border:none;">Sair</button>
-                <button onclick="validarChave()" style="flex:1; padding:10px; border-radius:10px; border:none; background:var(--insta-blue); color:white;">Entrar</button>
+                <button onclick="validarChave()" style="flex:1; padding:10px; border-radius:10px; border:none; background:var(--insta-blue); color:white;">Confirmar</button>
             </div>
         </div>
     </div>
@@ -94,7 +88,7 @@
             <button id="btn-humor" onclick="mudarAba('humor')">🎭 Humor</button>
             <button id="btn-agenda" onclick="mudarAba('agenda')">📅 Agenda</button>
             <button id="btn-feedback" onclick="mudarAba('feedback')">🏫 Opinião</button>
-            <button id="btn-materiais" onclick="mudarAba('materiais')">📚 Quiz</button>
+            <button id="btn-contatos" onclick="mudarAba('contatos')">📞 Contatos</button>
         </div>
     </nav>
 
@@ -107,21 +101,34 @@
         <section id="forum" class="aba active"><div id="feed-forum" class="feed"></div></section>
         <section id="mural" class="aba"><div id="feed-mural" class="feed"></div></section>
         <section id="avisos" class="aba"><div id="feed-avisos" class="feed"></div></section>
-        <section id="humor" class="aba"><div id="feed-humor" class="feed" style="text-align:center;"><h3>Como você está?</h3><div style="font-size:40px; margin-top:20px;">😊 😴 😰 🤯</div></div></section>
-        <section id="agenda" class="aba"><div id="feed-agenda" class="feed"></div></section>
-        <section id="feedback" class="aba"><div class="feed"><textarea id="txt-feedback" style="width:100%; height:150px; border-radius:15px; padding:15px; border:1px solid var(--border); background:var(--msg-outro); color:var(--text);" placeholder="Sua opinião sobre a escola..."></textarea></div></section>
-        <section id="materiais" class="aba"><div class="feed" style="text-align:center;"><h3>Área de Estudos</h3><p>Em breve materiais e quizzes aqui!</p></div></section>
-
-        <div class="footer-input">
-            <div id="reply-preview" class="reply-preview">
-                <span id="reply-text">Respondendo...</span>
-                <span onclick="cancelarResposta()" style="cursor:pointer; font-weight:bold;">✕</span>
+        
+        <section id="humor" class="aba">
+            <div class="emoji-grid">
+                <div class="emoji-card" onclick="enviarHumor('😊', 'Feliz')"><span>😊</span><strong>Feliz</strong></div>
+                <div class="emoji-card" onclick="enviarHumor('😴', 'Cansado')"><span>😴</span><strong>Cansado</strong></div>
+                <div class="emoji-card" onclick="enviarHumor('😰', 'Ansioso')"><span>😰</span><strong>Ansioso</strong></div>
+                <div class="emoji-card" onclick="enviarHumor('🤯', 'Estressado')"><span>🤯</span><strong>Estressado</strong></div>
             </div>
+        </section>
+
+        <section id="agenda" class="aba"><div id="feed-agenda" class="feed"></div></section>
+        <section id="feedback" class="aba">
+            <div class="feed">
+                <textarea id="txt-feedback" style="width:100%; height:150px; border-radius:15px; padding:15px; border:1px solid var(--border); background:var(--msg-outro); color:var(--text);" placeholder="Escreva sua opinião aqui..."></textarea>
+            </div>
+        </section>
+
+        <section id="contatos" class="aba">
+            <div class="feed">
+                <div class="contato-item"><div class="contato-icon">C</div><div><strong>Coordenação</strong><p>Fale com a gestão</p></div></div>
+                <div class="contato-item"><div class="contato-icon">S</div><div><strong>Secretaria</strong><p>Documentos e prazos</p></div></div>
+                <div class="contato-item"><div class="contato-icon">P</div><div><strong>Psicologia</strong><p>Apoio ao aluno</p></div></div>
+            </div>
+        </section>
+
+        <div id="barra-digitar" class="footer-input">
             <div class="insta-bar">
-                <div class="cam-btn">📷</div>
-                <div class="input-box">
-                    <input type="text" id="master-input" placeholder="Escreva algo...">
-                </div>
+                <div class="input-box"><input type="text" id="master-input" placeholder="Escreva algo..."></div>
                 <button class="send-btn" onclick="tentarEnviar()">Enviar</button>
             </div>
         </div>
@@ -146,7 +153,6 @@
         localStorage.setItem("nome", nome);
         
         let abaAtual = 'forum';
-        let dadosResposta = null;
 
         window.mudarAba = (id) => {
             abaAtual = id;
@@ -154,19 +160,21 @@
             document.querySelectorAll('.menu-scroll button').forEach(b => b.classList.remove('active-btn'));
             document.getElementById(id).classList.add('active');
             document.getElementById('btn-'+id).classList.add('active-btn');
+            
+            // ESCONDER BARRA NO HUMOR E CONTATOS
+            const barra = document.getElementById('barra-digitar');
+            if (id === 'humor' || id === 'contatos') {
+                barra.style.display = 'none';
+            } else {
+                barra.style.display = 'block';
+            }
         };
 
         window.toggleTheme = () => document.body.classList.toggle('dark-mode');
 
-        window.prepararResposta = (msg, autor) => {
-            dadosResposta = { msg, autor };
-            document.getElementById('reply-text').innerText = `Respondendo a ${autor}...`;
-            document.getElementById('reply-preview').style.display = 'flex';
-        };
-
-        window.cancelarResposta = () => {
-            dadosResposta = null;
-            document.getElementById('reply-preview').style.display = 'none';
+        window.enviarHumor = (emoji, texto) => {
+            push(ref(db, "sentimentos"), { nome, emoji, texto, timestamp: serverTimestamp() });
+            alert("Sentimento '" + texto + "' enviado com sucesso! ✨");
         };
 
         window.tentarEnviar = () => {
@@ -190,15 +198,13 @@
         };
 
         function enviar(texto, isCoord = false) {
-            const path = (abaAtual === 'forum') ? "mensagens" : (abaAtual === 'mural' ? "ideias" : abaAtual);
+            const path = (abaAtual === 'forum') ? "mensagens" : (abaAtual === 'mural' ? "ideias" : (abaAtual === 'feedback' ? "feedback" : abaAtual));
             push(ref(db, path), {
                 nome: isCoord ? "COORDENAÇÃO" : nome,
                 texto: texto,
-                timestamp: serverTimestamp(),
-                resposta: dadosResposta
+                timestamp: serverTimestamp()
             });
             document.getElementById('master-input').value = "";
-            cancelarResposta();
         }
 
         onValue(ref(db, "mensagens"), snap => {
@@ -208,8 +214,7 @@
                 const hora = d.timestamp ? new Date(d.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
                 const div = document.createElement("div");
                 div.className = `msg-container ${d.nome === nome ? 'me' : 'outro'}`;
-                div.onclick = () => prepararResposta(d.texto, d.nome);
-                div.innerHTML = `<span class="user-name">${d.nome}</span><div class="bubble">${d.resposta ? `<div class="reply-content"><b>${d.resposta.autor}</b><br>${d.resposta.msg}</div>` : ''}${d.texto}<span class="msg-time">${hora}</span></div>`;
+                div.innerHTML = `<span class="user-name">${d.nome}</span><div class="bubble">${d.texto}<span class="msg-time">${hora}</span></div>`;
                 f.appendChild(div);
             });
             f.scrollTop = f.scrollHeight;
