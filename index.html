@@ -20,6 +20,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
         body { background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; transition: 0.3s; }
 
+        /* INTRODUÇÃO / INÍCIO */
+        .intro-container { padding: 20px; line-height: 1.6; }
+        .intro-card { background: var(--msg-outro); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .intro-card h2 { color: var(--primary); margin-bottom: 10px; font-size: 20px; }
+        .intro-card h3 { color: var(--accent); margin: 15px 0 5px; font-size: 16px; }
+        .intro-card p { font-size: 14px; margin-bottom: 10px; }
+        .btn-start { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 15px; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; }
+
         /* MENU */
         .top-menu { background: var(--primary); padding: 10px 0; border-bottom: 1px solid var(--border); z-index: 1000; }
         .menu-scroll { display: flex; overflow-x: auto; gap: 8px; padding: 0 15px; scrollbar-width: none; }
@@ -31,9 +39,9 @@
 
         /* CONTEÚDO */
         .main-content { flex: 1; position: relative; overflow: hidden; display: flex; flex-direction: column; }
-        .aba { display: none; height: 100%; flex-direction: column; }
+        .aba { display: none; height: 100%; flex-direction: column; overflow-y: auto; }
         .aba.active { display: flex; }
-        .feed { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 110px; }
+        .feed { padding: 15px; display: flex; flex-direction: column; gap: 12px; padding-bottom: 110px; }
 
         /* BALÕES E RESPOSTA */
         .msg-container { display: flex; flex-direction: column; max-width: 85%; margin-bottom: 5px; position: relative; cursor: pointer; }
@@ -47,15 +55,15 @@
         .reply-box { background: rgba(0,0,0,0.08); padding: 5px 8px; border-left: 3px solid var(--insta-blue); border-radius: 4px; font-size: 11px; margin-bottom: 5px; }
         .reply-preview { background: var(--msg-outro); padding: 8px 15px; border-top: 1px solid var(--border); display: none; align-items: center; justify-content: space-between; font-size: 12px; }
 
-        /* DESTAQUE COORDENAÇÃO (MODO ESCURO CORRIGIDO) */
+        /* COORDENAÇÃO */
         .coord-msg .bubble { background: var(--coord) !important; border: 2px solid var(--coord-border) !important; font-weight: 500; }
         .dark-mode .coord-msg .bubble { color: #ffffff !important; }
 
-        /* RANKING MURAL */
+        /* MURAL RANKING */
         .top-ranking .bubble { border: 2px solid var(--gold) !important; box-shadow: 0 0 10px rgba(255,215,0,0.3); }
         .vote-btn { background: none; border: 1px solid var(--insta-blue); color: var(--insta-blue); border-radius: 12px; padding: 3px 10px; font-size: 11px; margin-top: 8px; cursor: pointer; font-weight: bold; }
 
-        /* FORMULÁRIO DE FEEDBACK */
+        /* FORMULÁRIO */
         .form-feedback { background: var(--msg-outro); padding: 20px; border-radius: 20px; border: 1px solid var(--border); }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-weight: bold; margin-bottom: 10px; font-size: 14px; }
@@ -65,11 +73,6 @@
         .options input:checked + label { background: var(--insta-blue); color: white; border-color: var(--insta-blue); }
         .text-area-feedback { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--border); margin-top: 5px; height: 80px; }
         .btn-enviar-form { width: 100%; padding: 15px; background: var(--accent); color: white; border: none; border-radius: 10px; font-weight: bold; margin-top: 10px; cursor: pointer; }
-
-        /* HUMOR */
-        .emoji-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 20px; }
-        .emoji-card { background: var(--msg-outro); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid var(--border); cursor: pointer; }
-        .emoji-card span { font-size: 40px; display: block; }
 
         /* FOOTER */
         .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 10000; }
@@ -97,7 +100,8 @@
 
     <nav class="top-menu">
         <div class="menu-scroll">
-            <button id="btn-forum" class="active-btn" onclick="mudarAba('forum')">💬 Chat</button>
+            <button id="btn-inicio" class="active-btn" onclick="mudarAba('inicio')">🏠 Início</button>
+            <button id="btn-forum" onclick="mudarAba('forum')">💬 Chat</button>
             <button id="btn-mural" onclick="mudarAba('mural')">💡 Mural</button>
             <button id="btn-avisos" onclick="mudarAba('avisos')">📢 Alertas</button>
             <button id="btn-humor" onclick="mudarAba('humor')">🎭 Humor</button>
@@ -113,7 +117,26 @@
     </header>
 
     <main class="main-content">
-        <section id="forum" class="aba active"><div id="feed-forum" class="feed"></div></section>
+        <section id="inicio" class="aba active">
+            <div class="intro-container">
+                <div class="intro-card">
+                    <h2>Bem-vindo ao Portal Elite – CETI José Marques 🏫</h2>
+                    <p>Olá! É um prazer ter você aqui. Este é o canal oficial de Ouvidoria do CETI José Marques, um espaço criado para fortalecer a comunicação entre você e a nossa escola.</p>
+                    
+                    <h3>Como funciona o nosso site?</h3>
+                    <p>Para aproveitar todas as ferramentas, siga este pequeno guia:</p>
+                    
+                    <p><strong>🎭 Expresse seu Humor:</strong> Logo na página inicial, você pode registrar como está se sentindo hoje. Isso nos ajuda a entender o clima da nossa comunidade.</p>
+                    <p><strong>📋 Envie seu Feedback:</strong> No botão Opinião, você pode enviar sugestões, elogios ou reclamações de forma rápida e segura.</p>
+                    <p><strong>📢 Fique Informado:</strong> Acesse o Mural e os Alertas para não perder nenhum comunicado importante da coordenação.</p>
+                    <p><strong>📅 Organize-se:</strong> Confira a Agenda para ficar por dentro de datas de provas, eventos e projetos escolares.</p>
+                    <p><strong>💬 Suporte e Chat:</strong> Se precisar de ajuda ou quiser conversar, utilize nossos canais de Chat ou entre em contato direto com o suporte técnico.</p>
+                </div>
+                <button class="btn-start" onclick="mudarAba('forum')">Explorar Portal 🚀</button>
+            </div>
+        </section>
+
+        <section id="forum" class="aba"><div id="feed-forum" class="feed"></div></section>
         <section id="mural" class="aba"><div id="feed-mural" class="feed"></div></section>
         <section id="avisos" class="aba"><div id="feed-avisos" class="feed"></div></section>
         
@@ -132,8 +155,7 @@
             <div class="feed">
                 <div class="form-feedback" id="form-pergunta">
                     <h3>📋 Feedback Escolar</h3><br>
-                    <div id="questoes-container">
-                        </div>
+                    <div id="questoes-container"></div>
                     <button class="btn-enviar-form" onclick="enviarQuestionario()">Enviar Feedback ✨</button>
                 </div>
             </div>
@@ -171,7 +193,7 @@
         let nome = localStorage.getItem("nome") || prompt("Seu nome:") || "Aluno";
         localStorage.setItem("nome", nome);
         
-        let abaAtual = 'forum';
+        let abaAtual = 'inicio';
         let dadosResposta = null;
 
         const perguntas = [
@@ -189,7 +211,6 @@
             "A merenda escolar é de boa qualidade?"
         ];
 
-        // Montar questionário
         const container = document.getElementById('questoes-container');
         perguntas.forEach((p, i) => {
             container.innerHTML += `
@@ -201,10 +222,7 @@
                     </div>
                 </div>`;
         });
-        container.innerHTML += `
-            <div class="form-group"><label>O que a escola poderia melhorar?</label><textarea id="melhorar" class="text-area-feedback"></textarea></div>
-            <div class="form-group"><label>O que você mais gosta na escola?</label><textarea id="gosta" class="text-area-feedback"></textarea></div>
-        `;
+        container.innerHTML += `<div class="form-group"><label>O que a escola poderia melhorar?</label><textarea id="melhorar" class="text-area-feedback"></textarea></div><div class="form-group"><label>O que você mais gosta na escola?</label><textarea id="gosta" class="text-area-feedback"></textarea></div>`;
 
         window.mudarAba = (id) => {
             abaAtual = id;
@@ -212,7 +230,7 @@
             document.querySelectorAll('.menu-scroll button').forEach(b => b.classList.remove('active-btn'));
             document.getElementById(id).classList.add('active');
             document.getElementById('btn-'+id).classList.add('active-btn');
-            document.getElementById('barra-digitar').style.display = (id === 'humor' || id === 'feedback' || id === 'contatos') ? 'none' : 'block';
+            document.getElementById('barra-digitar').style.display = (id === 'humor' || id === 'feedback' || id === 'contatos' || id === 'inicio') ? 'none' : 'block';
         };
 
         window.toggleTheme = () => document.body.classList.toggle('dark-mode');
@@ -223,10 +241,7 @@
             document.getElementById('reply-preview').style.display = 'flex';
         };
 
-        window.cancelarResposta = () => {
-            dadosResposta = null;
-            document.getElementById('reply-preview').style.display = 'none';
-        };
+        window.cancelarResposta = () => { dadosResposta = null; document.getElementById('reply-preview').style.display = 'none'; };
 
         window.enviarQuestionario = () => {
             const respostas = { usuario: nome, data: serverTimestamp(), itens: [] };
@@ -236,15 +251,14 @@
             });
             respostas.melhorar = document.getElementById('melhorar').value;
             respostas.gosta = document.getElementById('gosta').value;
-            
             push(ref(db, "questionarios"), respostas);
             alert("Feedback enviado com sucesso! Obrigado.");
-            mudarAba('forum');
+            mudarAba('inicio');
         };
 
         window.enviarHumor = (emoji, texto) => {
             push(ref(db, "sentimentos"), { nome, emoji, texto, timestamp: serverTimestamp() });
-            alert("Sentimento '" + texto + "' registrado! ✨");
+            alert("Sentimento registrado! ✨");
         };
 
         window.tentarEnviar = () => {
@@ -256,21 +270,17 @@
         };
 
         window.fecharModal = () => document.getElementById('modalChave').style.display = 'none';
-
         window.validarChave = () => {
             if (document.getElementById('inputChave').value === "Chernobyl") {
                 enviar(document.getElementById('master-input').value, true);
                 fecharModal();
                 document.getElementById('inputChave').value = "";
-            } else { alert("Chave incorreta!"); fecharModal(); }
+            } else { alert("Chave incorreta!"); }
         };
 
         function enviar(texto, isCoord = false) {
             const path = (abaAtual === 'forum') ? "mensagens" : (abaAtual === 'mural' ? "ideias" : abaAtual);
-            push(ref(db, path), {
-                nome: isCoord ? "COORDENAÇÃO" : nome,
-                texto: texto, votos: 0, timestamp: serverTimestamp(), resposta: dadosResposta
-            });
+            push(ref(db, path), { nome: isCoord ? "COORDENAÇÃO" : nome, texto, votos: 0, timestamp: serverTimestamp(), resposta: dadosResposta });
             document.getElementById('master-input').value = "";
             cancelarResposta();
         }
